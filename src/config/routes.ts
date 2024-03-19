@@ -1,0 +1,36 @@
+
+export const ROUTES = {
+    LOGIN: "/login",
+    REGISTER: "/register",
+    LOGOUT: "/logout",
+    FORGET_PASSWORD: "/forget-password",
+    CATEGORIES: "products/categories",
+    FEATURED_CATEGORIES: "/featured_categories",
+    COLLECTIONS: "/collections",
+    BRANDS: "/brands",
+    PRODUCTS: "/products",
+    FEATURED_PRODUCTS: "/featured_products",
+    TOP_SELLER_PRODUCTS: "/products_top_seller",
+    ON_SELLING_PRODUCTS: "/products_on_selling",
+    PRODUCT: "/product",
+    RELATED_PRODUCTS: "/related_products",
+    BEST_SELLER_PRODUCTS: "/products_best_seller",
+    NEW_ARRIVAL_PRODUCTS: "/products_new_arrival",
+    FLASH_SALE_PRODUCTS: "/products_flash_sale",
+    SHOPS: "/shops",
+    SHOP: "/shop",
+    SEARCH: "/product/search?",
+    ORDERS: "/orders",
+    ORDER: "/order",
+};
+  
+export const VENDOR ={
+    ID: 'vendor_id',
+    NAME: 'vendor_shop_name',
+    DESCRIPTION: 'vendor_description',
+    LOGO: 'vendor_shop_logo',
+    MOBILE_BANNER: 'mobile_banner',
+    LIST_BANNER: 'vendor_list_banner',
+    RATING: 'store_rating',
+    ISOFFLINE: 'is_store_offline',
+}
