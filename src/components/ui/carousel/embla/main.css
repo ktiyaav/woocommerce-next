@@ -1,9 +1,8 @@
 .embla {
     max-width: auto;
     margin: auto;
-    --slide-height: 19rem;
     --slide-spacing: 1rem;
-    --slide-size: 90%;
+    --slide-size: 75%;
   }
   .embla__viewport {
     overflow: hidden;
@@ -21,12 +20,10 @@
   }
   .embla__slide__number {
     box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
-    border-radius: 1.8rem;
     font-size: 4rem;
     font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: var(--slide-height);
   }
   
