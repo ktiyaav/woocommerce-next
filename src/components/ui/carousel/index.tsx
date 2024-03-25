@@ -20,19 +20,21 @@ type CarouselPropsType = {
 	buttonSize?: "default" | "small";
 	paginationVariant?: "default" | "circle";
 	paginationPosition?: "center" | "left" | "right";
+	boxed?: true | false;
 	loop?: boolean;
 	centeredSlides?: boolean;
-	breakpoints?: {} | any;
 	pagination?: {} | any;
 	navigation?: {} | any;
 	scrollbar?: {} | any;
-	autoplay?: {} | any;
+	delay?: number;
+	slidesPerView?: Array<number>;
+	spaceBetween?: Array<number>
 };
 
 const Carousel: React.FunctionComponent<CarouselPropsType> = ({
 	children,
 	className = "",
-	buttonGroupClassName = "",
+	buttonGroupClassName = "-mt-4 md:-mt-5 xl:-mt-7",
 	prevActivateId = "",
 	nextActivateId = "",
 	prevButtonClasses = "start-0",
@@ -40,11 +42,13 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
 	buttonSize = "default",
 	paginationVariant = "default",
 	paginationPosition,
-	breakpoints,
-	loop = true,
-	navigation = true,
+	boxed = true,
+	loop = false,
+	navigation = false,
 	pagination = false,
-	autoplay = true,
+	delay = 0,
+	slidesPerView = [1.5,4,4,5,8],
+	spaceBetween = [10,5,5,5,5],
 	...props
 }) => {
 	const prevRef = useRef<HTMLButtonElement>(null);
@@ -70,9 +74,33 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
         },
         prevButtonClasses
     );
+	const breakpoints = {
+		"1536": {
+			slidesPerView: slidesPerView[4],
+			spaceBetween: spaceBetween[4],
+		},
+		"1024": {
+			slidesPerView: slidesPerView[3],
+			spaceBetween: spaceBetween[3],
+		},
+		"768": {
+			slidesPerView: slidesPerView[2],
+			spaceBetween: spaceBetween[2],
+		},
+		"640": {
+			slidesPerView: slidesPerView[1],
+			spaceBetween: spaceBetween[1],
+		},
+		"0": {
+			slidesPerView: slidesPerView[0],
+			spaceBetween: spaceBetween[0],
+		},
+	};
+	const autoplay = delay>0 ? {delay: delay} : false;
+
 	return (
 		<div
-			className={`carouselWrapper relative ${className} ${classPagination} ${
+			className={` ${boxed ? 'container' : ''} carouselWrapper relative flex items-center justify-center ${className} ${classPagination} ${
 				paginationVariant === "circle" ? "dotsCircle" : ""
 			}`}
 		>

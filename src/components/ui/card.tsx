@@ -21,21 +21,21 @@ const Card: React.FC<Props> = ({
 	return (
 		<Link
 			href={href}
-			className="group flex justify-center text-center flex-col"
+			className={`group flex justify-center text-center flex-col  h-[${imageSize}] w-[${imageSize}]`}
 		>
 			<div
-				className={`relative inline-flex mb-3.5 md:mb-4 lg:mb-5 xl:mb-6 mx-auto ${
+				className={`relative inline-flex mb-3.5 md:mb-4 lg:mb-5 xl:mb-6 mx-auto w-full ${
 					variant === "rounded" ? "rounded-md" : "rounded-full"
 				}`}
 			>
-				<div className={`flex h-[${imageSize}] w-[${imageSize}]`}>
+				<div className={`flex w-full `}>
 					<Image
 						src={image?.src ?? placeholderImage}
 						alt={name}
 						width={imageSize}
 						height={imageSize}
 						quality={100}
-						className={`object-cover bg-gray-300 ${
+						className={`object-cover bg-gray-300 w-full ${
 							variant === "rounded" ? "rounded-md" : "rounded-full"
 						}`}
 					/>

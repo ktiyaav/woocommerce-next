@@ -4,10 +4,10 @@ import WOOAPI from "@/utils/woo";
 import { useEffect, useState } from "react";
 import Carousel from "../ui/carousel/embla";
 import CategoryBlock from "./categories/slider";
-// import { useUI } from '@/contexts/ui';
+import { useUI } from '@/contexts/ui';
 
 export default function AllCategories() {
-//   const { theme } = useUI();
+  const { theme } = useUI();
   const [categories,setCategories] = useState<any>();
   useEffect(() => {
         const fetchCategories = async () => {
@@ -29,9 +29,9 @@ export default function AllCategories() {
   }
   return (
     <>
-   <div className="container">
-    {/* <p className="">All Categories</p> */}
+   <div className="">
     {categories && <CategoryBlock type="rounded" data={categories}/>}
+    
    </div>
    </>
   );
