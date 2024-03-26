@@ -2,8 +2,7 @@
 import { ENDPOINTS } from "@/config/routes";
 import WOOAPI from "@/utils/woo";
 import { useEffect, useState } from "react";
-import Carousel from "../ui/carousel/embla";
-import CategoryBlock from "./categories/slider";
+import CategorySlider from "../ui/carousel/catslider";
 import { useUI } from '@/contexts/ui';
 
 export default function AllCategories() {
@@ -11,7 +10,6 @@ export default function AllCategories() {
   const [categories,setCategories] = useState<any>();
   useEffect(() => {
         const fetchCategories = async () => {
-            console.log('fetch')
             const cat = await WOOAPI.get(ENDPOINTS.CATEGORIES + '?per_page=100');
             if(cat.status == 200){
                 const data = cat.data;
@@ -30,8 +28,7 @@ export default function AllCategories() {
   return (
     <>
    <div className="">
-    {categories && <CategoryBlock type="rounded" data={categories}/>}
-    
+    {categories && <CategorySlider type="rounded" data={categories}/>}    
    </div>
    </>
   );

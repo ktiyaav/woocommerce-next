@@ -43,8 +43,8 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
 	paginationVariant = "default",
 	paginationPosition,
 	boxed = true,
-	loop = false,
-	navigation = false,
+	loop = true,
+	navigation = true,
 	pagination = false,
 	delay = 0,
 	slidesPerView = [1.5,4,4,5,8],
@@ -108,7 +108,9 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
 				modules={[Navigation, Autoplay, Pagination, Scrollbar]}
 				loop={loop}
 				autoplay={autoplay}
-				breakpoints={breakpoints}
+				// breakpoints={breakpoints}
+				slidesPerView="auto"
+				spaceBetween={10}
 				pagination={pagination}
 				navigation={
 					navigation

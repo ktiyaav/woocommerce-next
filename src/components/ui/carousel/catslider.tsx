@@ -11,7 +11,7 @@ interface CategoriesProps {
 	height?: string;
 }
 
-const CategoryBlock: React.FC<CategoriesProps> = ({
+const CategorySlider: React.FC<CategoriesProps> = ({
 	className = "mb-10 md:mb-11 lg:mb-12 xl:mb-14 lg:pb-1 xl:pb-0",
 	spaceBetween = "0",
 	type = "circle",
@@ -28,12 +28,11 @@ const CategoryBlock: React.FC<CategoriesProps> = ({
                 // delay={100}
             >
                 { data.map((category : any) => (
-                    <Slide key={`category--key-${category.id}`} className="w-[800px]">
+                    <Slide key={`category--key-${category.id}`} className="w-auto">
                         <Card
                             item={category}
                             href=""
                             variant={type}
-                            size="medium"
                         />
                     </Slide>
                 ))}
@@ -42,4 +41,4 @@ const CategoryBlock: React.FC<CategoriesProps> = ({
 	);
 };
 
-export default CategoryBlock;
+export default CategorySlider;
