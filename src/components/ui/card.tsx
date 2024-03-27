@@ -11,7 +11,7 @@ interface Props {
 const Card: React.FC<Props> = ({
 	item,
 	variant = "circle",
-	size = 150,
+	size = 180,
 	href,
 }) => {
 	const { name, image } = item ?? {};

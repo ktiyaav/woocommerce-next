@@ -4,6 +4,7 @@ import WOOAPI from "@/utils/woo";
 import { useEffect, useState } from "react";
 import CategorySlider from "../ui/carousel/catslider";
 import { useUI } from '@/contexts/ui';
+import BannerCard from "../ui/banner";
 
 export default function AllCategories() {
   const { theme } = useUI();
@@ -28,8 +29,16 @@ export default function AllCategories() {
   return (
     <>
    <div className="">
-    {categories && <CategorySlider type="rounded" data={categories}/>}    
+    {categories && <CategorySlider type="rounded" data={categories}/>}   
+    {<BannerCard banner={banner} href="" width={200} height={192}/>} 
    </div>
    </>
   );
+}
+
+const banner = {
+  name:'Banner',
+  image: {
+    src: '/assets/images/slider/3.jpg'
+  }
 }
