@@ -21,7 +21,7 @@ function getImage(deviceWidth: number, imgObj: any) {
 }
 
 const Banner: FC<BannerProps> = ({
-    boxed = true,
+    boxed = false,
     layout= 'one',
 	banner,
 	className,
@@ -33,7 +33,7 @@ const Banner: FC<BannerProps> = ({
 }) => {
 	const { name, image } = banner;
 	return (
-		<div className={cn("mx-auto", boxed ? `container` : `` , className)}>
+		<div className={cn("mx-auto my-2", boxed ? `container` : `` , className)}>
 			<Link
 				href={href}
 				className={cn(

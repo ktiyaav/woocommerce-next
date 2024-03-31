@@ -6,53 +6,42 @@ interface BannerProps {
 	className?: string;
 	width?: number;
 	height?: number;
+	boxed?: boolean;
     banners: Array<any>;
 }
 
-const breakpoints = {
-	"0": {
-		slidesPerView: 2,
-	},
-};
-
 const BannerSliderBlock: React.FC<BannerProps> = ({
-	className = "mb-12 md:mb-14 xl:mb-16",
+	className = "mb-10 md:mb-11 lg:mb-12 xl:mb-14 lg:pb-1 xl:pb-0",
+	boxed = false,
 	width = 800,
 	height = 400,
     banners
 }) => {
 	return (
-		<div className={`${className} mx-auto max-w-[1920px] overflow-hidden`}>
-			<div className="-mx-32 sm:-mx-44 lg:-mx-60 xl:-mx-72 2xl:-mx-80">
+		<div className={`${className}`}>
 				<Carousel
-                    slidesPerView={5}
-					// breakpoints={breakpoints}
-					centeredSlides={true}
+					boxed={boxed}
+					centeredSlides={false}
 					loop={true}
-					// autoplay={{
-					// 	delay: 4000,
-					// }}
-					pagination={{
-						clickable: true,
-					}}
-					paginationVariant="circle"
+					delay={4000}
+					pagination={true}
 					buttonGroupClassName="hidden"
 				>
 					{banners.map((banner: any) => (
 						<Slide
 							key={`banner--key${banner.id}`}
-							className="px-1.5 md:px-2.5 xl:px-3.5"
+							className="w-full"
 						>
 							<Banner
 								banner={banner}
 								width={width}
 								height={height}
 								href=""
+								boxed={false}
 							/>
 						</Slide>
 					))}
 				</Carousel>
-			</div>
 		</div>
 	);
 };

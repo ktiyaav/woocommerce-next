@@ -24,8 +24,12 @@ const CategorySlider: React.FC<CategoriesProps> = ({
 	return (
 		<div className={ cn( 'multi-slide' , className) }>
             <Carousel
+                boxed={true}
 				className=""
-                // delay={100}
+                centeredSlides={false}
+                loop={true}
+                delay={4000}
+                pagination={false}
             >
                 { data.map((category : any) => (
                     <Slide key={`category--key-${category.id}`} className="w-auto multi-slide">

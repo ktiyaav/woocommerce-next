@@ -97,6 +97,7 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
 	// 	},
 	// };
 	const autoplay = delay>0 ? {delay: delay} : false;
+	console.log(autoplay)
 
 	return (
 		<div
@@ -125,6 +126,7 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
 						: {}
 				}
 				{...props}
+				className="w-full"
 			>
 				{children}
 			</Swiper>

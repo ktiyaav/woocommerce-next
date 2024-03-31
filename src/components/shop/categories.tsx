@@ -31,8 +31,8 @@ export default function AllCategories() {
     <>
    <div className="">
     {categories && <CategorySlider type="rounded" data={categories} width={192} height={192}/>}   
-    {<BannerCard banner={banner} href="" width={200} height={192}/>} 
-    {<BannerSliderBlock banners={banners} width={200} height={192}/>}
+    {<BannerCard banner={banner} href="" width={200} height={192} boxed={true}/>} 
+    {<BannerSliderBlock banners={banners} width={200} height={192} boxed={true} />}
    </div>
    </>
   );
