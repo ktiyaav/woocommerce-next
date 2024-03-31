@@ -27,8 +27,8 @@ type CarouselPropsType = {
 	navigation?: {} | any;
 	scrollbar?: {} | any;
 	delay?: number;
-	slidesPerView?: Array<number>;
-	spaceBetween?: Array<number>
+	slidesPerView?: any;
+	spaceBetween?: number;
 };
 
 const Carousel: React.FunctionComponent<CarouselPropsType> = ({
@@ -47,8 +47,8 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
 	navigation = true,
 	pagination = false,
 	delay = 0,
-	slidesPerView = [1.5,4,4,5,8],
-	spaceBetween = [10,5,5,5,5],
+	slidesPerView = "auto",
+	spaceBetween = 10,
 	...props
 }) => {
 	const prevRef = useRef<HTMLButtonElement>(null);
@@ -67,35 +67,35 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
     );
 
 	let prevButtonClassName = cn(
-        "left-8 w-7 h-7 lg:w-8 lg:h-8 text-sm md:text-base lg:text-lg text-black flex items-center justify-center rounded-full bg-white absolute transition duration-250 hover:bg-gray-900 hover:text-white focus:outline-none transform shadow-navigation -translate-x-1/2",
+        "left-8 ml-7  w-7 h-7 lg:w-8 lg:h-8 text-sm md:text-base lg:text-lg text-black flex items-center justify-center rounded-full bg-white absolute transition duration-250 hover:bg-gray-900 hover:text-white focus:outline-none transform shadow-navigation -translate-x-1/2",
         {
             "lg:w-9 lg:h-9 xl:w-10 xl:h-10 3xl:w-12 3xl:h-12 text-sm md:text-base lg:text-xl 3xl:text-2xl":
                 buttonSize === "small"
         },
         prevButtonClasses
     );
-	const breakpoints = {
-		"1536": {
-			slidesPerView: slidesPerView[4],
-			spaceBetween: spaceBetween[4],
-		},
-		"1024": {
-			slidesPerView: slidesPerView[3],
-			spaceBetween: spaceBetween[3],
-		},
-		"768": {
-			slidesPerView: slidesPerView[2],
-			spaceBetween: spaceBetween[2],
-		},
-		"640": {
-			slidesPerView: slidesPerView[1],
-			spaceBetween: spaceBetween[1],
-		},
-		"0": {
-			slidesPerView: slidesPerView[0],
-			spaceBetween: spaceBetween[0],
-		},
-	};
+	// const breakpoints = {
+	// 	"1536": {
+	// 		slidesPerView: slidesPerView[4],
+	// 		spaceBetween: spaceBetween[4],
+	// 	},
+	// 	"1024": {
+	// 		slidesPerView: slidesPerView[3],
+	// 		spaceBetween: spaceBetween[3],
+	// 	},
+	// 	"768": {
+	// 		slidesPerView: slidesPerView[2],
+	// 		spaceBetween: spaceBetween[2],
+	// 	},
+	// 	"640": {
+	// 		slidesPerView: slidesPerView[1],
+	// 		spaceBetween: spaceBetween[1],
+	// 	},
+	// 	"0": {
+	// 		slidesPerView: slidesPerView[0],
+	// 		spaceBetween: spaceBetween[0],
+	// 	},
+	// };
 	const autoplay = delay>0 ? {delay: delay} : false;
 
 	return (
@@ -110,7 +110,7 @@ const Carousel: React.FunctionComponent<CarouselPropsType> = ({
 				autoplay={autoplay}
 				// breakpoints={breakpoints}
 				slidesPerView="auto"
-				spaceBetween={10}
+				spaceBetween={spaceBetween}
 				pagination={pagination}
 				navigation={
 					navigation

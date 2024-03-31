@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import CategorySlider from "../ui/carousel/catslider";
 import { useUI } from '@/contexts/ui';
 import BannerCard from "../ui/banner";
+import BannerSliderBlock from "../ui/carousel/bannerslider";
 
 export default function AllCategories() {
   const { theme } = useUI();
@@ -29,8 +30,9 @@ export default function AllCategories() {
   return (
     <>
    <div className="">
-    {categories && <CategorySlider type="rounded" data={categories}/>}   
+    {categories && <CategorySlider type="rounded" data={categories} width={192} height={192}/>}   
     {<BannerCard banner={banner} href="" width={200} height={192}/>} 
+    {<BannerSliderBlock banners={banners} width={200} height={192}/>}
    </div>
    </>
   );
@@ -42,3 +44,23 @@ const banner = {
     src: '/assets/images/slider/3.jpg'
   }
 }
+const banners = [
+  {
+    name:'Banner',
+    image: {
+      src: '/assets/images/slider/1.jpg'
+    }
+  },
+  {
+    name:'Banner',
+    image: {
+      src: '/assets/images/slider/2.jpg'
+    }
+  },
+  {
+    name:'Banner',
+    image: {
+      src: '/assets/images/slider/3.jpg'
+    }
+  }
+]

@@ -5,9 +5,10 @@ import Link, { LinkProps } from "next/link";
 
 interface BannerProps {
 	banner: any;
-    boxed: boolean;
-    width: number;
-    height: number;
+    layout?: 'one' | 'two' | 'three' | 'multiple' | 'carousel';
+    boxed?: boolean;
+    width?: number;
+    height?: number;
 	variant?: "rounded" | "default";
 	effectActive?: boolean;
 	className?: string;
@@ -21,13 +22,14 @@ function getImage(deviceWidth: number, imgObj: any) {
 
 const Banner: FC<BannerProps> = ({
     boxed = true,
+    layout= 'one',
 	banner,
 	className,
 	variant = "rounded",
 	classNameInner,
 	href,
-    width,
-    height,
+    width = 800,
+    height = 50,
 }) => {
 	const { name, image } = banner;
 	return (

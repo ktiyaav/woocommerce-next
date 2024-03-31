@@ -4,21 +4,23 @@ import { Skeleton } from "./skeleton";
 interface Props {
 	item: any;
 	variant?: "rounded" | "circle";
-	size?: number;
+	width?: number;
+	height?: number;
 	href: LinkProps["href"];
 }
 
 const Card: React.FC<Props> = ({
 	item,
 	variant = "circle",
-	size = 180,
+	width = 100,
+	height = 100,
 	href,
 }) => {
 	const { name, image } = item ?? {};
 	return (
 		<Link
 			href={href}
-			className={`group flex justify-center text-center flex-col  h-[${size}] w-[${size}]`}
+			className={`group flex justify-center text-center flex-col`}
 		>
 			<div
 				className={`relative inline-flex mb-2.5 md:mb-2 lg:mb-3 xl:mb-3 mx-auto ${
@@ -31,10 +33,10 @@ const Card: React.FC<Props> = ({
 					<Image
 						src={image?.src ?? ''}
 						alt={name}
-						width={size}
-						height={size}
+						width={width}
+						height={height}
 						quality={100}
-						className={`object-cover bg-gray-300 w-full  h-[${size}px] w-[${size}px] ${
+						className={`object-cover bg-gray-300 w-full  h-[${height}px] w-[${width}px] ${
 							variant === "rounded" ? "rounded-md" : "rounded-full"
 						}`}
 					/>

@@ -1,14 +1,14 @@
 import { SwiperSlide } from "swiper/react";
 import Carousel , { Slide } from "@/components/ui/carousel";
 import Card from "@/components/ui/card";
-
+import {cn} from '@/utils/cn';
 interface CategoriesProps {
 	className?: string;
 	spaceBetween?: string;
 	type?: "rounded" | "circle";
     data: any;
-	width?: string;
-	height?: string;
+	width?: number;
+	height?: number;
 }
 
 const CategorySlider: React.FC<CategoriesProps> = ({
@@ -22,17 +22,19 @@ const CategorySlider: React.FC<CategoriesProps> = ({
 
 
 	return (
-		<div className={className}>
+		<div className={ cn( 'multi-slide' , className) }>
             <Carousel
 				className=""
                 // delay={100}
             >
                 { data.map((category : any) => (
-                    <Slide key={`category--key-${category.id}`} className="w-auto">
+                    <Slide key={`category--key-${category.id}`} className="w-auto multi-slide">
                         <Card
                             item={category}
                             href=""
                             variant={type}
+                            width={width}
+                            height={height}
                         />
                     </Slide>
                 ))}
