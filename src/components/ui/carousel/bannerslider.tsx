@@ -33,11 +33,12 @@ const BannerSliderBlock: React.FC<BannerProps> = ({
 							className="w-full"
 						>
 							<Banner
-								banner={banner}
+								items={banner}
 								width={width}
 								height={height}
 								href=""
 								boxed={false}
+								layout="one"
 							/>
 						</Slide>
 					))}
