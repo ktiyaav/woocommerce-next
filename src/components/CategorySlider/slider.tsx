@@ -1,6 +1,5 @@
-import { SwiperSlide } from "swiper/react";
-import Carousel , { Slide } from "@/components/ui/carousel";
-import Card from "@/components/ui/card";
+import Carousel , { Slide } from "@/components/Carousel";
+import Card from "@/components/Card";
 import {cn} from '@/utils/cn';
 interface CategoriesProps {
 	className?: string;
@@ -31,7 +30,7 @@ const CategorySlider: React.FC<CategoriesProps> = ({
                 delay={4000}
                 pagination={false}
             >
-                { data.map((category : any) => (
+                {data.map((category : any) => (
                     <Slide key={`category--key-${category.id}`} className="w-auto multi-slide">
                         <Card
                             item={category}

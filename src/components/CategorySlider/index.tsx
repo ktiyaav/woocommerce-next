@@ -2,12 +2,9 @@
 import { ENDPOINTS } from "@/config/routes";
 import WOOAPI from "@/utils/woo";
 import { useEffect, useState } from "react";
-import CategorySlider from "../ui/carousel/catslider";
-import { useUI } from '@/contexts/ui';
-import Space from "../ui/spacer";
+import Slider from "./slider";
 
-export default function ShopCategories() {
-  const { theme } = useUI();
+const CategorySlider = () => {
   const [categories,setCategories] = useState<any>();
   useEffect(() => {
         const fetchCategories = async () => {
@@ -26,11 +23,6 @@ export default function ShopCategories() {
     // categories skeleton
     return null;
   }
-  return (
-    <>
-   <div className="">
-    {categories && <CategorySlider type="rounded" data={categories} width={192} height={192}/>}
-   </div>
-   </>
-  );
+  return <Slider type="rounded" data={categories} width={192} height={192}/>;
 }
+export default CategorySlider;

@@ -8,9 +8,9 @@ interface ComponentsMap {
 }
 
 const components: ComponentsMap = {
-  ShopCategory: dynamic(() => import('@/components/shop/categories')),
-  BannerSlider: dynamic(() => import('@/components/ui/carousel/bannerslider')),
-  Banner: dynamic(() => import('@/components/ui/banner')),
+  ShopCategory: dynamic(() => import('@/components/CategorySlider')),
+  BannerSlider: dynamic(() => import('@/components/BannerSlider')),
+  Banner: dynamic(() => import('@/components/Banner')),
   Spacer: dynamic(() => import('@/components/ui/spacer'))
 };
 

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link, { LinkProps } from "next/link";
-import { Skeleton } from "./skeleton";
+import { Skeleton } from "../ui/skeleton";
 interface Props {
 	item: any;
 	variant?: "rounded" | "circle";

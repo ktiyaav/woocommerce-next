@@ -9,18 +9,18 @@ export const data = [
     {
         component: 'BannerSlider',
         banners: [
-            {
+            [{
               name:'Banner',
               image: {
                 src: '/assets/images/slider/1.jpg'
               }
-            },
-            {
+            }],
+            [{
               name:'Banner',
               image: {
                 src: '/assets/images/slider/2.jpg'
               }
-            },
+            }],
         ],
         width: 500,
         height: 340,
@@ -72,7 +72,7 @@ export const data = [
         boxed: true
     },
     {
-        component: 'spacer',
+        component: 'Spacer',
         space: 10
     }
 ]
