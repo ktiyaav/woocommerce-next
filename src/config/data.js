@@ -74,5 +74,18 @@ export const data = [
     {
         component: 'Spacer',
         space: 10
+    },
+    {
+      component: 'Banner',
+      layout: 'one',
+      items: [{
+        name:'Banner',
+        image: {
+          src: '/assets/images/bottom.png'
+        }
+      },],
+      width: 1000,
+        height: 340,
+        boxed: true
     }
 ]

@@ -7,7 +7,7 @@ export const ENDPOINTS = {
     FEATURED_CATEGORIES: "/featured_categories",
     COLLECTIONS: "/collections",
     BRANDS: "/brands",
-    PRODUCTS: "/products",
+    PRODUCTS: "products",
     FEATURED_PRODUCTS: "/featured_products",
     TOP_SELLER_PRODUCTS: "/products_top_seller",
     ON_SELLING_PRODUCTS: "/products_on_selling",
