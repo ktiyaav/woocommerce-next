@@ -20,6 +20,10 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily:{
+        heading: 'var(--font-dmsans)',
+        body: 'var(--font-qs)'
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
