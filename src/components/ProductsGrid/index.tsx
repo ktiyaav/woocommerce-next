@@ -8,7 +8,6 @@ import { CURRENCY } from "@/config/constants";
 
 const ProductsGrid = () => {
   const [products,setProducts] = useState<any>();
-  const [hoveredProduct, setHoveredProduct] = useState<any>(null);
   useEffect(() => {
         const fetchProducts = async () => {
             const prod = await WOOAPI.get(ENDPOINTS.PRODUCTS);
@@ -32,10 +31,8 @@ const ProductsGrid = () => {
     {console.log(products)}
     {products.map((item: any, idx: number) => (
         <div 
-            className="text-black shadow-sm mb-4 lg:mb-8 cursor-pointer hover:shadow-xl rounded-md transition-all duration-500 ease-in-out pb-3" 
+            className="text-black shadow-md md:shadow-sm mb-4 lg:mb-8  cursor-pointer hover:shadow-xl rounded-md transition-all duration-500 ease-in-out group" 
             key={idx}
-            onMouseEnter={() => setHoveredProduct(idx)}
-            onMouseLeave={() => setHoveredProduct(null)}
         >
             <div className="aspect-square">
                 {item?.images[0]?.src ? (
@@ -44,17 +41,24 @@ const ProductsGrid = () => {
                     <Skeleton className="h-full w-full rounded-md" />
                 )}
             </div>
-            <div className="p-2 lg:p-4">
+            <div className="p-2 lg:p-4 bg-white md:group-hover:translate-y-[-40px] transition-all delay-75 duration-300 ">
                 <div className="text-sm font-heading font-normal p-2 pt-3">{item.name}</div>
                 <div className="text-sm font-body font-bold pl-2 flex items-center gap-2">{CURRENCY} {item.price} <span className="text-xs font-medium">inclusive of taxes</span></div>
-            </div>
-            {hoveredProduct === idx && (
-                <div className="pl-4 lg:pl-6 m-auto align-bottom start">
-                    <div className="font-body text-sm uppercase font-extrabold">
+                <div className="flex ml-2 mt-3">
+                <div className=""><FeatherIcon icon="star" strokeWidth={1} size={12} fill="#ffb22d"></FeatherIcon></div>
+                <div className=""><FeatherIcon icon="star" strokeWidth={1} size={12} fill="#ffb22d"></FeatherIcon></div>
+                <div className=""><FeatherIcon icon="star" strokeWidth={1} size={12} fill="#ffb22d"></FeatherIcon></div>
+                <div className=""><FeatherIcon icon="star" strokeWidth={1} size={12} fill="#ffb22d"></FeatherIcon></div>
+                <div className=""><FeatherIcon icon="star" strokeWidth={1} size={12} fill="#ffb22d"></FeatherIcon></div>
+                </div>
+                <div className="pl-1 gap-4 flex md:hidden group-hover:flex static justify-stretch md:absolute pt-3 left-5 right-6 h-10">
+                    <div className="font-heading text-xs md:text-sm uppercase font-extrabold">
                         {item.variations.length > 0 ? 'Select Options' : 'Add to Cart'}
                     </div>
+                    <div className="ml-auto mr-2"><FeatherIcon icon="heart" size={15}></FeatherIcon></div>
                 </div>
-            )}
+            </div>
+            
         </div>
     ))}
   </div>
