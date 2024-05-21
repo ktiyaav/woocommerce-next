@@ -9,6 +9,6 @@ export const RAZORPAY_CREATE_ORDER = '';
 export const ONE_SIGNAL_APP_ID = '';
 export const PLUGIN = '';
 
-export const WCVERSION = "wc/v2";
+export const WCVERSION = "wc/v3";
 export const WCFM = "wcfmmp/v1";
 export const WCANALYTICS = "wc-analytics";
