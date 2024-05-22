@@ -1,64 +1,241 @@
-"use client"
+"use client";
 import { ENDPOINTS } from "@/config/routes";
 import WOOAPI from "@/utils/woo";
 import { useEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import FeatherIcon from "feather-icons-react";
-import { CURRENCY } from "@/config/constants";
-import Link from 'next/link';
+import { CURRENCY, TAX_STATUS } from "@/config/constants";
+import Link from "next/link";
+ 
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
 
-const SingleProduct = ({slug} : {slug: string}) => {
-  const [product,setProduct] = useState<any>();
+const SingleProduct = ({ slug }: { slug: string }) => {
+  const [product, setProduct] = useState<any>();
+  const [variations, setVariations] = useState<any>();
+  const [selected, setSelected] = useState<any>();
+
   useEffect(() => {
-        const fetchProducts = async () => {
-            const prod = await WOOAPI.get(ENDPOINTS.PRODUCT_WITH_SLUG + slug);
-            if(prod.status == 200){
-                const data = prod.data;
-                setProduct(data[0]);
-                console.log(data)
-            } else {
-                console.log('failed to fetch catefories');
-            }
+    const fetchProducts = async () => {
+      const prod = await WOOAPI.get(ENDPOINTS.PRODUCT_WITH_SLUG + slug);
+      if (prod.status == 200) {
+        const data = prod.data;
+        if (data[0].variations.length > 0) {
+          Promise.all(
+            data[0].variations.map(async (variationId: number) => {
+              const variationProduct = await WOOAPI.get(
+                ENDPOINTS.PRODUCT + variationId
+              );
+              if (variationProduct.status === 200) {
+                return variationProduct.data;
+              } else {
+                return null;
+              }
+            })
+          )
+            .then((variationProducts) => {
+              const filteredVariations = variationProducts.filter(Boolean);
+              console.log(filteredVariations);
+              setVariations((prevVariations: any) => [
+                prevVariations,
+                filteredVariations,
+              ]);
+            })
+            .catch((error) => {
+              console.error("Error fetching variation products:", error);
+            });
         }
-        fetchProducts();
-        
-  },[])
+        setProduct(data[0]);
+        console.log(data);
+      } else {
+        console.log("failed to fetch catefories");
+      }
+    };
+    fetchProducts();
+  }, []);
 
-  if(!product) { 
+  if (!product) {
     // products skeleton
     return null;
   }
-  return <>
-  <div className="text-black md:container dark:text-white flex flex-col md:flex-row gap-5">
+  return (
+    <>
+      <div className="text-black md:container dark:text-white flex flex-col md:flex-row gap-5">
         <div className="aspect-[1/1.3] cursor-crosshair flex flex-col basis-4/12">
+          <div className="">
+            {product?.images[0]?.src ? (
+              <img
+                src={product?.images[0]?.src}
+                alt={product.name}
+                className="aspect-[1/1.3] object-cover inset-0 w-full h-full"
+              />
+            ) : (
+              <Skeleton className="h-full w-full rounded-md" />
+            )}
+          </div>
+          <div className="flex pt-1 gap-1">
+            {product?.images.map((image: any, index: number) => (
+              <div key={index} className="aspect-square rounded-md">
+                {image?.src ? (
+                  <img
+                    src={image.src}
+                    alt={product.name}
+                    className="aspect-square object-cover inset-0 w-full h-full"
+                  />
+                ) : (
+                  <Skeleton className="absolute inset-0 w-full h-full rounded-md" />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className=" basis-5/12 p-4 border-r-2 flex flex-col  md:pr-10">
+
+          <div className="text-xs font-heading font-normal text-gray-500 dark:text-slate-300 pb-4">
+            Home
+            <FeatherIcon
+              icon="chevrons-right"
+              strokeWidth={1}
+              size={12}
+              className="inline"
+            />{" "}
+            Shop
+            <FeatherIcon
+              icon="chevrons-right"
+              strokeWidth={1}
+              size={12}
+              className="inline"
+            />{" "}
+            {product.name}
+          </div>
+
+          <Link href="#">
+            <div className=" text-2xl font-heading font-medium text-pink-500">
+              {product.name}
+            </div>
+          </Link>
+
+          <div className="">
+            <div
+              dangerouslySetInnerHTML={{ __html: product.short_description }}
+              className="text-sm font-heading font-thin pt-4 list-disc"
+            />
+
+            <div className="flex mt-3 items-center">
+              {[...Array(Math.floor(product.average_rating))].map(
+                (_, index) => (
+                  <div key={index} className="">
+                    <FeatherIcon
+                      icon="star"
+                      strokeWidth={1}
+                      size={12}
+                      fill="#ffb22d"
+                      className="text-[#ffb22d]"
+                    />
+                  </div>
+                )
+              )}
+              {product.average_rating % 1 >= 0.5 && (
                 <div className="">
-                    {product?.images[0]?.src ? (
-                        <img src={product?.images[0]?.src} alt={product.name} className="aspect-[1/1.3] object-cover inset-0 w-full h-full" />
-                    ) : (
-                        <Skeleton className="h-full w-full rounded-md" />
-                    )}
+                  <FeatherIcon
+                    icon="star"
+                    strokeWidth={3}
+                    size={11}
+                    fill="#fff"
+                    className="text-[#ffb22d]"
+                  />
                 </div>
-                <div className="flex pt-1 gap-1">
-                {product?.images.map((image:any, index:number) => (
-                    <div key={index} className="aspect-square rounded-md">
-                        {image?.src ? (
-                            <img src={image.src} alt={product.name} className="aspect-square object-cover inset-0 w-full h-full" />
-                        ) : (
-                            <Skeleton className="absolute inset-0 w-full h-full rounded-md" />
-                        )}
-                    </div>
-                ))}
-                </div>
-                
+              )}
+              <div className="text-xs pl-2">
+                {product.rating_count} customer review(s)
+              </div>
+            </div>
+          </div>
+
+          <div className="text-3xl font-heading font-normal pt-6">
+            {CURRENCY}
+            {product.price}{" "}
+            <span className="text-sm font-body">
+              <span className="line-through">{product.regular_price}1499</span>{" "}
+              {TAX_STATUS}
+            </span>
+          </div>
+
+          <div className="pt-6">
+            {product.type === "variable" && (
+              <>
+                {product.attributes.map((item: any, idx: number) => {
+                  if (item.variation) {
+                    return (
+                      <>
+                        <div
+                          className="uppercase font-heading font-medium text-sm"
+                          key={idx}
+                        >
+                          {item.name}
+                        </div>
+                        <div className="flex">
+                          {item.options.map((variation: any, idx: number) => (
+                            <div
+                              className="text-xs font-body font-bold p-2 mt-2 mr-2 rounded shadow-md shadow-slate-100 dark:shadow-gray-800 cursor-pointer hover:bg-slate-100 hover:text-black transition-all duration-300"
+                              key={idx}
+                            >
+                              {variation}
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    );
+                  }
+                })}
+              </>
+            )}
+          </div>
+
+          <div className="pt-6 flex gap-2 items-center justify-center">
+            <div className="basis-2/12">
+                <Select>
+                    <SelectTrigger className="w-[80px] h-[55px] focus:ring-slate-50 hover:ring-slate-500">
+                        <SelectValue placeholder="1" />
+                    </SelectTrigger>
+                    <SelectContent className="">
+                        <SelectItem value="1">1</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                        <SelectItem value="3">3</SelectItem>
+                        <SelectItem value="4">4</SelectItem>
+                        <SelectItem value="5">5</SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+            <div className="basis-5/12 text-center py-4 px-8 w-full shadow-sm cursor-pointer uppercase font-heading bg-pink-500 text-white text-sm font-medium hover:bg-pink-700 transition-all duration-300">Add to Cart</div>
+            <div className="basis-5/12 text-center py-4 px-8 shadow-sm cursor-pointer uppercase font-heading bg-black dark:bg-slate-100 dark:text-black dark:hover:bg-pink-500 dark:hover:text-white text-white text-sm font-medium hover:bg-pink-500 transition-all duration-300">Buy Now</div>
+          </div>
+
+          <div className="flex text-xs font-bold font-body pt-8 items-center justify-between gap-2 uppercase">
+            <div className="flex gap-2 cursor-pointer items-center"><FeatherIcon icon="heart" size={14} strokeWidth={3}></FeatherIcon> Add to Wishlist</div>
+            <div className="flex gap-2 cursor-pointer items-center"><FeatherIcon icon="share-2" size={14} strokeWidth={3}></FeatherIcon> Share</div>
+          </div>
+          <div className=" text-xs pt-10 flex flex-col font-heading uppercase">
+            <span>SKU : {product.sku} </span>
+            <span>Category : {product.categories.map((item:any,idx:number) => <>{item.name}</>)} </span>
+          </div>
         </div>
 
-        <div className=" basis-5/12 p-4 border-r-2 flex flex-col">
-            <div className="text-xs font-heading font-normal text-gray-500 dark:text-slate-300 pb-4">Home > Shop > {product.name}</div>
-            <div className=" text-2xl font-heading font-medium text-pink-500">{product.name}</div>
+        <div>
+          <div className="font-heading font-medium basis-3/12 p-4">
+            Releated Products
+          </div>
         </div>
-
-        <div><div className="font-heading font-medium basis-3/12 p-4">Releated Products</div></div>
-  </div>
-  </>;
-}
+      </div>
+    </>
+  );
+};
 export default SingleProduct;

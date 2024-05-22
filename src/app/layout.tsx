@@ -33,7 +33,7 @@ export default function RootLayout({
       >
         <UIProvider>
           <Navbar background="bg-white" />
-            <div className="pt-24 min-h-screen antialiased text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">{children}</div>
+            <div className="pt-14 md:pt-24 min-h-screen antialiased text-slate-500 dark:text-slate-400 bg-white dark:bg-slate-900">{children}</div>
           <Footer />
         </UIProvider>
       </body>

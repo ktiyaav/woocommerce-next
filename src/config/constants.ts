@@ -13,3 +13,4 @@ export const WCVERSION = "wc/v3";
 export const WCFM = "wcfmmp/v1";
 export const WCANALYTICS = "wc-analytics";
 export const CURRENCY = '₹';
+export const TAX_STATUS = 'inclusive of taxes';
