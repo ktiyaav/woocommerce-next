@@ -63,7 +63,7 @@ const Navbar: React.FC<NavbarProps> = ({ background }) => {
 
   return (
     <>
-   <div className={` font-body shadow-sm h-16 fixed w-full p-3 px-10 lg:px-10 m-auto z-50 bg-white dark:bg-black text-black dark:text-slate-200`}>
+   <div className={` font-body shadow-md shadow-slate-100 dark:shadow-gray-950 h-16 fixed w-full p-3 px-10 lg:px-10 m-auto z-50 bg-white dark:bg-gray-950 dark:border-slate-300/10 text-black dark:text-slate-200`}>
         <div className="container flex justify-center items-center px-24">
             <div className="flex justify-center  items-center">
                 <div className="absolute container left-0 top-5">
