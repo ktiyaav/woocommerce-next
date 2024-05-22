@@ -29,9 +29,8 @@ const SingleProduct = ({slug} : {slug: string}) => {
     return null;
   }
   return <>
-  <div className="text-black container dark:text-white flex flex-col md:flex-row">
-
-        <div className="aspect-[1/1.3] max-w-md cursor-crosshair flex flex-col">
+  <div className="text-black md:container dark:text-white flex flex-col md:flex-row gap-5">
+        <div className="aspect-[1/1.3] cursor-crosshair flex flex-col basis-4/12">
                 <div className="">
                     {product?.images[0]?.src ? (
                         <img src={product?.images[0]?.src} alt={product.name} className="aspect-[1/1.3] object-cover inset-0 w-full h-full" />
@@ -53,11 +52,12 @@ const SingleProduct = ({slug} : {slug: string}) => {
                 
         </div>
 
-        <div className="border-right">
-            {product.name}
+        <div className=" basis-5/12 p-4 border-r-2 flex flex-col">
+            <div className="text-xs font-heading font-normal text-gray-500 dark:text-slate-300 pb-4">Home > Shop > {product.name}</div>
+            <div className=" text-2xl font-heading font-medium text-pink-500">{product.name}</div>
         </div>
-        
-        <div><div className="font-heading font-bold">Releated Products</div></div>
+
+        <div><div className="font-heading font-medium basis-3/12 p-4">Releated Products</div></div>
   </div>
   </>;
 }

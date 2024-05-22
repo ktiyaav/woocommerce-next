@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "@public/assets/globals.css";
 import Navbar from "@components/Navbar";
 import Footer from "@components/Footer";
 import { UIProvider } from "@/contexts/ui";
-import { Quicksand, DM_Sans } from "next/font/google";
+import { Quicksand, Jost } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
-const dmsans = DM_Sans({
-    weight: ['300','400','500','600','700','800','900','1000'],
+const jost = Jost({
+    weight: ['300','400','500','600','700','800','900'],
     subsets: ['latin'],
-    variable: '--font-dmsans',
+    variable: '--font-jost',
 })
 const qs = Quicksand({
     weight: ['300','400','500','600','700'],
@@ -30,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`
-        ${dmsans.variable}  
+        ${jost.variable}  
         ${qs.variable}`}
       >
         <UIProvider>

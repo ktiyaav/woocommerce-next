@@ -21,7 +21,7 @@ module.exports = {
     },
     extend: {
       fontFamily:{
-        heading: 'var(--font-dmsans)',
+        heading: 'var(--font-jost)',
         body: 'var(--font-qs)'
       },
       keyframes: {
