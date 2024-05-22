@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Skeleton } from "../ui/skeleton";
 import FeatherIcon from "feather-icons-react";
 import { CURRENCY } from "@/config/constants";
+import Link from 'next/link';
 
 const ProductsGrid = () => {
   const [products,setProducts] = useState<any>();
@@ -27,11 +28,12 @@ const ProductsGrid = () => {
     return null;
   }
   return <>
+  
   <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-5 text-black container dark:text-white justify-stretch">
     {products.map((item: any, idx: number) => (
+        <Link href={`/shop/${item.slug}`} key={idx}>
         <div 
             className="text-black bg-white dark:bg-gray-800 dark:text-white shadow-md md:shadow-sm mb-4 lg:mb-8  cursor-pointer hover:shadow-xl rounded-md transition-all duration-300 ease-in-out group flex flex-col justify-between" 
-            key={idx}
         >
             <div className="aspect-[1/1.2]">
                 {item?.images[0]?.src ? (
@@ -63,6 +65,7 @@ const ProductsGrid = () => {
             </div>
             </div>
         </div>
+        </Link>
     ))}
   </div>
   </>;
