@@ -80,7 +80,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
               <Skeleton className="h-full w-full rounded-md" />
             )}
           </div>
-          <div className="flex pt-1 gap-1">
+          <div className="hidden md:flex pt-1 gap-1">
             {product?.images.map((image: any, index: number) => (
               <div key={index} className="aspect-square rounded-md">
                 {image?.src ? (
@@ -99,7 +99,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
 
         <div className=" basis-5/12 p-4 border-r-2 flex flex-col  md:pr-10">
 
-          <div className="text-xs font-heading font-normal text-gray-500 dark:text-slate-300 pb-4">
+          <div className="text-xs hidden md:block font-heading font-normal text-gray-500 dark:text-slate-300 pb-4">
             Home
             <FeatherIcon
               icon="chevrons-right"
@@ -215,8 +215,8 @@ const SingleProduct = ({ slug }: { slug: string }) => {
                     </SelectContent>
                 </Select>
             </div>
-            <div className="basis-5/12 text-center py-4 px-8 w-full shadow-sm cursor-pointer uppercase font-heading bg-pink-500 text-white text-sm font-medium hover:bg-pink-700 transition-all duration-300">Add to Cart</div>
-            <div className="basis-5/12 text-center py-4 px-8 shadow-sm cursor-pointer uppercase font-heading bg-black dark:bg-slate-100 dark:text-black dark:hover:bg-pink-500 dark:hover:text-white text-white text-sm font-medium hover:bg-pink-500 transition-all duration-300">Buy Now</div>
+            <div className="basis-5/12 text-center py-4 px-4 w-full shadow-sm cursor-pointer uppercase font-heading bg-pink-500 text-white text-sm font-medium hover:bg-pink-700 transition-all duration-300">Add to Cart</div>
+            <div className="basis-5/12 text-center py-4 px-4 shadow-sm cursor-pointer uppercase font-heading bg-black dark:bg-slate-100 dark:text-black dark:hover:bg-pink-500 dark:hover:text-white text-white text-sm font-medium hover:bg-pink-500 transition-all duration-300">Buy Now</div>
           </div>
 
           <div className="flex text-xs font-bold font-body pt-8 items-center justify-between gap-2 uppercase">
