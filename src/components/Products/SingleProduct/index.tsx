@@ -18,6 +18,8 @@ import {
   } from "@/components/ui/select"
 import RelatedGrid from "../RelatedGrid";
 import RelatedList from "../RelatedList";
+import SingleProductSkeleton from "./skeleton";
+import RelatedListSkeleton from "../RelatedList/skeleton";
 
 const SingleProduct = ({ slug }: { slug: string }) => {
   const [product, setProduct] = useState<any>();
@@ -64,8 +66,16 @@ const SingleProduct = ({ slug }: { slug: string }) => {
   }, []);
 
   if (!product) {
-    // products skeleton
-    return null;
+    return <div className="text-black md:container dark:text-white flex flex-col md:flex-row gap-5">
+      
+      <div className="basis-9/12 border-r-2 p-4">
+          <SingleProductSkeleton/>
+      </div>
+      <div className="font-heading font-medium basis-3/12 p-4">
+          <div className="pb-4">Releated Products</div>
+          <RelatedListSkeleton/>
+      </div>
+      </div>;
   }
   return (
     <>

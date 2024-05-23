@@ -6,6 +6,7 @@ import { Skeleton } from "../../ui/skeleton";
 import FeatherIcon from "feather-icons-react";
 import { CURRENCY } from "@/config/constants";
 import Link from 'next/link';
+import ProductsGridSkeleton from "./skeleton";
 
 const ProductsGrid = () => {
   const [products,setProducts] = useState<any>();
@@ -25,11 +26,11 @@ const ProductsGrid = () => {
 
   if(!products) { 
     // products skeleton
-    return null;
+    return <ProductsGridSkeleton/>;
   }
   return <>
   
-  <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-5 text-black container dark:text-white justify-stretch">
+  <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 lg:gap-5 text-black container dark:text-white justify-stretch transition-all ease-in duration-1000">
     {products.map((item: any, idx: number) => (
         <Link href={`/shop/${item.slug}`} key={idx}>
         <div 
