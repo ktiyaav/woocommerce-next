@@ -21,7 +21,7 @@ import RelatedList from "../RelatedList";
 import SingleProductSkeleton from "./skeleton";
 import RelatedListSkeleton from "../RelatedList/skeleton";
 import { useUI } from "@/contexts/ui";
-import { Description } from "./product-details";
+import { Description, Reviews, SizeGuide } from "./product-details";
 
 const SingleProduct = ({ slug }: { slug: string }) => {
   const [product, setProduct] = useState<any>();
@@ -172,7 +172,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
               dangerouslySetInnerHTML={{ __html: product.short_description }}
               className="text-sm font-heading font-thin pt-4 list-disc"
             />
-            <Description short={product.short_description} long={product.description} />
+            <Description short={product.short_description} long={product.description} attributes={product.attributes} />
             <div className="flex mt-3 items-center">
               {[...Array(Math.floor(product.average_rating))].map(
                 (_, index) => (
@@ -247,7 +247,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
 
           <div className="pt-6 flex gap-2 items-center justify-center">
             <div className="basis-2/12">
-            <Select onValueChange={(value) => handleQty(value)}>
+            <Select onValueChange={(value) => handleQty(Number(value))}>
               <SelectTrigger className="w-[80px] h-[55px] focus:ring-slate-50 hover:ring-slate-500">
                   <SelectValue placeholder="1" />
               </SelectTrigger>
@@ -268,9 +268,15 @@ const SingleProduct = ({ slug }: { slug: string }) => {
             <div className="flex gap-2 cursor-pointer items-center"><FeatherIcon icon="heart" size={14} strokeWidth={3}></FeatherIcon> Add to Wishlist</div>
             <div className="flex gap-2 cursor-pointer items-center"><FeatherIcon icon="share-2" size={14} strokeWidth={3}></FeatherIcon> Share</div>
           </div>
-          <div className=" text-xs pt-10 flex flex-col font-heading uppercase">
-            <span>SKU : {product.sku} </span>
-            <span>Category : {product.categories.map((item:any,idx:number) => <>{item.name}</>)} </span>
+          <div className=" text-xs pt-5 flex font-heading uppercase justify-between items-center">
+            <div className=" flex flex-col font-heading uppercase space-y-1">
+              <span>SKU : {product.sku} </span>
+              <span>Category : {product.categories.map((item:any,idx:number) => <>{item.name}</>)} </span>
+            </div>
+            <div className=" flex flex-col font-heading uppercase space-y-1">
+              <span><Reviews id={product.id} allowed={product.reviews_allowed}/> </span>
+              <span><SizeGuide/> </span>
+            </div>
           </div>
         </div>
 

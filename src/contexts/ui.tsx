@@ -27,7 +27,7 @@ const uiReducer = (state : State, action: ActionType) => {
             return {
             ...state,
             theme: action.value
-        }
+            }
         case "ADD_TO_CART":
             if (action.value.product_id !== null) {
                 const existingItemIndex = state.cart?.findIndex((item: any) => item.product_id === action.value.product_id);
@@ -45,16 +45,16 @@ const uiReducer = (state : State, action: ActionType) => {
                     };
                 }
             }
-            return state; 
+            return state;
         case "CLEAR_CART":
             return {
             ...state,
-            cart: {}
-        }
+            cart: []
+            }
         default:
             return {
                 ...state
-        }
+            }
     }
 }
 
