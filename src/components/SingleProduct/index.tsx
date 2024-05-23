@@ -16,6 +16,7 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
+import RelatedGrid from "../Products/RelatedGrid";
 
 const SingleProduct = ({ slug }: { slug: string }) => {
   const [product, setProduct] = useState<any>();
@@ -232,6 +233,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
         <div>
           <div className="font-heading font-medium basis-3/12 p-4">
             Releated Products
+            <div className="md:hidden pt-6"><RelatedGrid ids={product.related_ids}/></div>
           </div>
         </div>
       </div>
