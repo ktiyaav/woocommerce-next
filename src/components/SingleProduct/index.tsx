@@ -231,12 +231,10 @@ const SingleProduct = ({ slug }: { slug: string }) => {
           </div>
         </div>
 
-        <div>
-          <div className="font-heading font-medium basis-3/12 p-4">
-            Releated Products
-            <div className="hidden md:block pt-6"><RelatedList ids={product.related_ids}/></div>
-            <div className="md:hidden pt-6"><RelatedGrid ids={product.related_ids}/></div>
-          </div>
+        <div className="font-heading font-medium basis-3/12 p-4">
+          Releated Products
+          <div className="hidden md:block pt-6"><RelatedList ids={product.related_ids}/></div>
+          <div className="md:hidden pt-6"><RelatedGrid ids={product.related_ids}/></div>
         </div>
       </div>
     </>

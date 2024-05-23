@@ -45,8 +45,8 @@ const RelatedList = ({ids}: {ids : Array<number>}) => {
             </div>
             
             <div className="p-1 bg-white  dark:bg-gray-800 dark:text-white  transition-all duration-300 ">
-                <div className="text-sm font-heading font-normal p-1 pl-2">{item.name}</div>
-                <div className="text-sm font-body font-bold pl-2 flex items-center gap-2 pt-0">{CURRENCY} {item.price} <span className="text-xs font-medium">inclusive of taxes</span></div>
+                <div className="text-xs font-heading font-normal p-1 pl-2">{item.name}</div>
+                <div className="text-xs font-body font-bold pl-2 flex items-center gap-2 pt-0">{CURRENCY} {item.price} <span className="text-xs font-medium">inclusive of taxes</span></div>
                 <div className="flex pl-2 p-1 items-center">
                     {[...Array(Math.floor(item.average_rating))].map((_, index) => (
                         <div key={index} className="">
