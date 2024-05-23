@@ -6,6 +6,7 @@ import { Skeleton } from "../../ui/skeleton";
 import FeatherIcon from "feather-icons-react";
 import { CURRENCY } from "@/config/constants";
 import Link from 'next/link';
+import RelatedListSkeleton from "./skeleton";
 
 const RelatedList = ({ids}: {ids : Array<number>}) => {
   const [products,setProducts] = useState<any>();
@@ -26,15 +27,13 @@ const RelatedList = ({ids}: {ids : Array<number>}) => {
   },[])
 
   if(!products) { 
-    // products skeleton
-    return null;
+    return <RelatedListSkeleton/>;
   }
   return <>
-  
   <div className="flex text-black dark:text-white justify-stretch flex-col">
     {products.map((item: any, idx: number) => (
         <Link href={`/shop/${item.slug}`} key={idx}>
-        <div className="text-black border bg-white dark:bg-gray-800 dark:text-white shadow-md md:shadow-sm mb-4 lg:mb-8  cursor-pointer hover:shadow-xl rounded-md transition-all duration-300 ease-in-out group flex" 
+        <div className="text-black border bg-white dark:bg-gray-800 dark:text-white shadow-md md:shadow-sm mb-4 cursor-pointer hover:shadow-xl rounded-md transition-all duration-300 ease-in-out group flex" 
         >
             <div className="aspect-square max-w-24">
                 {item?.images[0]?.src ? (
