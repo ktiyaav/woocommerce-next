@@ -23,6 +23,7 @@ import RelatedListSkeleton from "../RelatedList/skeleton";
 
 const SingleProduct = ({ slug }: { slug: string }) => {
   const [product, setProduct] = useState<any>();
+  const [selectedImage, setImage] = useState<any>();
   const [variations, setVariations] = useState<any>();
   const [selected, setSelected] = useState<any>();
 
@@ -57,6 +58,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
             });
         }
         setProduct(data[0]);
+        data[0]?.images[0]?.src ? setImage(data[0]?.images[0]?.src) : '';
         console.log(data);
       } else {
         console.log("failed to fetch catefories");
@@ -83,9 +85,10 @@ const SingleProduct = ({ slug }: { slug: string }) => {
         <div className="aspect-[1/1.3] cursor-crosshair flex flex-col basis-4/12">
           <div className=" overflow-hidden">
             {/* Will replace by image carousel later on */}
-            {product?.images[0]?.src ? (
+            {selectedImage
+             ? (
               <img
-                src={product?.images[0]?.src}
+                src={selectedImage}
                 alt={product.name}
                 className="aspect-[1/1.3] object-cover inset-0 w-full h-full hover:scale-150 transition-all ease-in duration-150"
               />
@@ -93,14 +96,15 @@ const SingleProduct = ({ slug }: { slug: string }) => {
               <Skeleton className="h-full w-full rounded-md" />
             )}
           </div>
-          <div className="hidden md:flex pt-1 gap-1">
+          <div className="hidden md:flex pt-1 gap-1 overflow-scroll">
             {product?.images.map((image: any, index: number) => (
-              <div key={index} className="aspect-square rounded-md">
+              <div key={index} className="aspect-square rounded-md cursor-pointer">
                 {image?.src ? (
                   <img
                     src={image.src}
                     alt={product.name}
                     className="aspect-square object-cover inset-0 w-full h-full"
+                    onClick={() => setImage(image.src)}
                   />
                 ) : (
                   <Skeleton className="absolute inset-0 w-full h-full rounded-md" />
