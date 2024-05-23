@@ -2,7 +2,7 @@
 import { ENDPOINTS } from "@/config/routes";
 import WOOAPI from "@/utils/woo";
 import { useEffect, useState } from "react";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../../ui/skeleton";
 import FeatherIcon from "feather-icons-react";
 import { CURRENCY, TAX_STATUS } from "@/config/constants";
 import Link from "next/link";
@@ -16,8 +16,8 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
-import RelatedGrid from "../Products/RelatedGrid";
-import RelatedList from "../Products/RelatedList";
+import RelatedGrid from "../RelatedGrid";
+import RelatedList from "../RelatedList";
 
 const SingleProduct = ({ slug }: { slug: string }) => {
   const [product, setProduct] = useState<any>();
@@ -71,12 +71,13 @@ const SingleProduct = ({ slug }: { slug: string }) => {
     <>
       <div className="text-black md:container dark:text-white flex flex-col md:flex-row gap-5">
         <div className="aspect-[1/1.3] cursor-crosshair flex flex-col basis-4/12">
-          <div className="">
+          <div className=" overflow-hidden">
+            {/* Will replace by image carousel later on */}
             {product?.images[0]?.src ? (
               <img
                 src={product?.images[0]?.src}
                 alt={product.name}
-                className="aspect-[1/1.3] object-cover inset-0 w-full h-full"
+                className="aspect-[1/1.3] object-cover inset-0 w-full h-full hover:scale-150 transition-all ease-in duration-150"
               />
             ) : (
               <Skeleton className="h-full w-full rounded-md" />

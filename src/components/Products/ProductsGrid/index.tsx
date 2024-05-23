@@ -2,7 +2,7 @@
 import { ENDPOINTS } from "@/config/routes";
 import WOOAPI from "@/utils/woo";
 import { useEffect, useState } from "react";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../../ui/skeleton";
 import FeatherIcon from "feather-icons-react";
 import { CURRENCY } from "@/config/constants";
 import Link from 'next/link';
