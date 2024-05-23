@@ -20,12 +20,17 @@ import RelatedGrid from "../RelatedGrid";
 import RelatedList from "../RelatedList";
 import SingleProductSkeleton from "./skeleton";
 import RelatedListSkeleton from "../RelatedList/skeleton";
+import { useUI } from "@/contexts/ui";
 
 const SingleProduct = ({ slug }: { slug: string }) => {
   const [product, setProduct] = useState<any>();
   const [selectedImage, setImage] = useState<any>();
   const [variations, setVariations] = useState<any>();
   const [selected, setSelected] = useState<any>();
+  const [selectedVariation, setSelectedVariation] = useState<any>();
+  const [qty, setQty] = useState<number>(1);
+
+  const { cart, addToCart } = useUI();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -66,6 +71,27 @@ const SingleProduct = ({ slug }: { slug: string }) => {
     };
     fetchProducts();
   }, []);
+
+  const handleAddItem = () => {
+    addToCart({
+      product_id: product.id,
+      variation_id: null,
+      quantity: qty
+    })
+    console.log(cart)
+  }
+  const handleQty = (qty:number) => {
+    setQty(qty);
+    console.log(cart)
+  }
+  const handleVariationSelect = (variation_details: { id: number, value: any}) => {
+    console.log(selectedVariation);
+    setSelectedVariation((prevVariations: any) => {
+      const newData = prevVariations?.filter((variation: any) => variation.id !== variation_details.id);
+      const updatedVariations = newData ? [...newData, variation_details] : [variation_details];
+      return updatedVariations;
+    });
+  }
 
   if (!product) {
     return <div className="text-black md:container dark:text-white flex flex-col md:flex-row gap-5">
@@ -202,8 +228,9 @@ const SingleProduct = ({ slug }: { slug: string }) => {
                         <div className="flex">
                           {item.options.map((variation: any, idx: number) => (
                             <div
-                              className="text-xs font-body font-bold p-2 mt-2 mr-2 rounded shadow-md shadow-slate-100 dark:shadow-gray-800 cursor-pointer hover:bg-slate-100 hover:text-black transition-all duration-300"
+                              className={`text-xs font-body font-bold p-2 mt-2 mr-2 rounded shadow-md shadow-slate-100 dark:shadow-gray-800 cursor-pointer hover:bg-slate-100 hover:text-black transition-all duration-300 ${selectedVariation?.filter((v:any) => v.id ===item.id && v.value == variation ).length > 0  ? 'bg-pink-500 text-white' : ''}`}
                               key={idx}
+                              onClick={() => handleVariationSelect({id:item.id, value:variation})}
                             >
                               {variation}
                             </div>
@@ -219,20 +246,20 @@ const SingleProduct = ({ slug }: { slug: string }) => {
 
           <div className="pt-6 flex gap-2 items-center justify-center">
             <div className="basis-2/12">
-                <Select>
-                    <SelectTrigger className="w-[80px] h-[55px] focus:ring-slate-50 hover:ring-slate-500">
-                        <SelectValue placeholder="1" />
-                    </SelectTrigger>
-                    <SelectContent className="">
-                        <SelectItem value="1">1</SelectItem>
-                        <SelectItem value="2">2</SelectItem>
-                        <SelectItem value="3">3</SelectItem>
-                        <SelectItem value="4">4</SelectItem>
-                        <SelectItem value="5">5</SelectItem>
-                    </SelectContent>
-                </Select>
+            <Select onValueChange={(value) => handleQty(value)}>
+              <SelectTrigger className="w-[80px] h-[55px] focus:ring-slate-50 hover:ring-slate-500">
+                  <SelectValue placeholder="1" />
+              </SelectTrigger>
+              <SelectContent className="">
+                  <SelectItem value="1">1</SelectItem>
+                  <SelectItem value="2">2</SelectItem>
+                  <SelectItem value="3">3</SelectItem>
+                  <SelectItem value="4">4</SelectItem>
+                  <SelectItem value="5">5</SelectItem>
+              </SelectContent>
+          </Select>
             </div>
-            <div className="basis-5/12 text-center py-4 px-4 w-full shadow-sm cursor-pointer uppercase font-heading bg-pink-500 text-white text-sm font-medium hover:bg-pink-700 transition-all duration-300">Add to Cart</div>
+            <div className="basis-5/12 text-center py-4 px-4 w-full shadow-sm cursor-pointer uppercase font-heading bg-pink-500 text-white text-sm font-medium hover:bg-pink-700 transition-all duration-300" onClick={() => handleAddItem()}>Add to Cart</div>
             <div className="basis-5/12 text-center py-4 px-4 shadow-sm cursor-pointer uppercase font-heading bg-black dark:bg-slate-100 dark:text-black dark:hover:bg-pink-500 dark:hover:text-white text-white text-sm font-medium hover:bg-pink-500 transition-all duration-300">Buy Now</div>
           </div>
 

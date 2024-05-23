@@ -1,15 +1,24 @@
 "use client"
 import React, { createContext, useContext, useReducer } from 'react';
 
+
 interface State {
-    theme: string,
+    theme: string;
+    cart: {
+        product_id: number;
+        variation_id: number | null;
+        quantity: number;
+    }[];
 }
 type ActionType = 
     | { type: "SET_THEME", value: string }
     | { type: "SET_CART" }
+    | { type: "ADD_TO_CART", value: any }
+    | { type: "CLEAR_CART" }
 
 const initialState = {
-    theme : 'light'
+    theme : 'light',
+    cart: []
 }
 
 const uiReducer = (state : State, action: ActionType) => {
@@ -18,6 +27,29 @@ const uiReducer = (state : State, action: ActionType) => {
             return {
             ...state,
             theme: action.value
+        }
+        case "ADD_TO_CART":
+            if (action.value.product_id !== null) {
+                const existingItemIndex = state.cart?.findIndex((item: any) => item.product_id === action.value.product_id);
+                if (existingItemIndex !== -1) {
+                    const updatedCart = [...state.cart];
+                    updatedCart[existingItemIndex].quantity = Number(updatedCart[existingItemIndex].quantity) + 1;
+                    return {
+                        ...state,
+                        cart: updatedCart
+                    };
+                } else {
+                    return {
+                        ...state,
+                        cart: [...state.cart, action.value]
+                    };
+                }
+            }
+            return state; 
+        case "CLEAR_CART":
+            return {
+            ...state,
+            cart: {}
         }
         default:
             return {
@@ -35,10 +67,14 @@ export const UIProvider : React.FC<{children: React.ReactNode}> = ({ children })
     const [state, dispatch] = useReducer(uiReducer, initialState);
 
     const setTheme = (value:string) => dispatch({ type: "SET_THEME", value:value });
+    const addToCart = (value:string) => dispatch({ type: "ADD_TO_CART", value:value });
+    const clearCart = () => dispatch({ type: "CLEAR_CART" });
 
     const value = React.useMemo( () => ({
         ...state,
-        setTheme
+        setTheme,
+        addToCart,
+        clearCart
     }),[state]);
 
     return <UIContext.Provider value={value}> {children} </UIContext.Provider>;
