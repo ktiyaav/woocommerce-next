@@ -21,6 +21,7 @@ import RelatedList from "../RelatedList";
 import SingleProductSkeleton from "./skeleton";
 import RelatedListSkeleton from "../RelatedList/skeleton";
 import { useUI } from "@/contexts/ui";
+import { Description } from "./product-details";
 
 const SingleProduct = ({ slug }: { slug: string }) => {
   const [product, setProduct] = useState<any>();
@@ -106,8 +107,8 @@ const SingleProduct = ({ slug }: { slug: string }) => {
       </div>;
   }
   return (
-    <>
-      <div className="text-black md:container dark:text-white flex flex-col md:flex-row gap-5">
+    <div className="flex md:container flex-col items-center">
+      <div className="text-black dark:text-white flex flex-col md:flex-row gap-5 pb-24 border-b-2">
         <div className="aspect-[1/1.3] cursor-crosshair flex flex-col basis-4/12">
           <div className=" overflow-hidden">
             {/* Will replace by image carousel later on */}
@@ -171,7 +172,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
               dangerouslySetInnerHTML={{ __html: product.short_description }}
               className="text-sm font-heading font-thin pt-4 list-disc"
             />
-
+            <Description short={product.short_description} long={product.description} />
             <div className="flex mt-3 items-center">
               {[...Array(Math.floor(product.average_rating))].map(
                 (_, index) => (
@@ -279,7 +280,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
           <div className="md:hidden pt-6"><RelatedGrid ids={product.related_ids}/></div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default SingleProduct;
