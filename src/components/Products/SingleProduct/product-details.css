@@ -1,0 +1,30 @@
+
+table{
+    margin-top:10px;
+
+}
+p{ 
+    margin-bottom: 10px;
+    margin-top:10px;
+}
+
+ul{
+    margin: 10px 0;
+}
+
+td{
+    background-color: rgb(248 250 252 / var(--tw-bg-opacity));
+    padding: 5px;
+    border: 1px solid #d6d6d6;
+}
+
+tr:first-child > td{
+    background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+th{
+    border: 1px solid #d6d6d6;
+}

@@ -6,16 +6,16 @@ import { Skeleton } from "../../ui/skeleton";
 import FeatherIcon from "feather-icons-react";
 import { CURRENCY, TAX_STATUS } from "@/config/constants";
 import Link from "next/link";
- 
+
 import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select"
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import RelatedGrid from "../RelatedGrid";
 import RelatedList from "../RelatedList";
 import SingleProductSkeleton from "./skeleton";
@@ -64,7 +64,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
             });
         }
         setProduct(data[0]);
-        data[0]?.images[0]?.src ? setImage(data[0]?.images[0]?.src) : '';
+        data[0]?.images[0]?.src ? setImage(data[0]?.images[0]?.src) : "";
         console.log(data);
       } else {
         console.log("failed to fetch catefories");
@@ -77,34 +77,42 @@ const SingleProduct = ({ slug }: { slug: string }) => {
     addToCart({
       product_id: product.id,
       variation_id: null,
-      quantity: qty
-    })
-    console.log(cart)
-  }
-  const handleQty = (qty:number) => {
+      quantity: qty,
+    });
+    console.log(cart);
+  };
+  const handleQty = (qty: number) => {
     setQty(qty);
-    console.log(cart)
-  }
-  const handleVariationSelect = (variation_details: { id: number, value: any}) => {
+    console.log(cart);
+  };
+  const handleVariationSelect = (variation_details: {
+    id: number;
+    value: any;
+  }) => {
     console.log(selectedVariation);
     setSelectedVariation((prevVariations: any) => {
-      const newData = prevVariations?.filter((variation: any) => variation.id !== variation_details.id);
-      const updatedVariations = newData ? [...newData, variation_details] : [variation_details];
+      const newData = prevVariations?.filter(
+        (variation: any) => variation.id !== variation_details.id
+      );
+      const updatedVariations = newData
+        ? [...newData, variation_details]
+        : [variation_details];
       return updatedVariations;
     });
-  }
+  };
 
   if (!product) {
-    return <div className="text-black md:container dark:text-white flex flex-col md:flex-row gap-5">
-      
-      <div className="basis-9/12 border-r-2 p-4">
-          <SingleProductSkeleton/>
-      </div>
-      <div className="font-heading font-medium basis-3/12 p-4">
+    return (
+      <div className="text-black md:container dark:text-white flex flex-col md:flex-row gap-5">
+        <div className="basis-9/12 border-r-2 p-4">
+          <SingleProductSkeleton />
+        </div>
+        <div className="font-heading font-medium basis-3/12 p-4">
           <div className="pb-4">Releated Products</div>
-          <RelatedListSkeleton/>
+          <RelatedListSkeleton />
+        </div>
       </div>
-      </div>;
+    );
   }
   return (
     <div className="flex md:container flex-col items-center">
@@ -112,8 +120,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
         <div className="aspect-[1/1.3] cursor-crosshair flex flex-col basis-4/12">
           <div className=" overflow-hidden">
             {/* Will replace by image carousel later on */}
-            {selectedImage
-             ? (
+            {selectedImage ? (
               <img
                 src={selectedImage}
                 alt={product.name}
@@ -125,7 +132,10 @@ const SingleProduct = ({ slug }: { slug: string }) => {
           </div>
           <div className="hidden md:flex pt-1 gap-1 overflow-scroll">
             {product?.images.map((image: any, index: number) => (
-              <div key={index} className="aspect-square rounded-md cursor-pointer">
+              <div
+                key={index}
+                className="aspect-square rounded-md cursor-pointer"
+              >
                 {image?.src ? (
                   <img
                     src={image.src}
@@ -142,7 +152,6 @@ const SingleProduct = ({ slug }: { slug: string }) => {
         </div>
 
         <div className=" basis-5/12 p-4 border-r-2 flex flex-col  md:pr-10">
-
           <div className="text-xs hidden md:block font-heading font-normal text-gray-500 dark:text-slate-300 pb-4">
             Home
             <FeatherIcon
@@ -172,7 +181,13 @@ const SingleProduct = ({ slug }: { slug: string }) => {
               dangerouslySetInnerHTML={{ __html: product.short_description }}
               className="text-sm font-heading font-thin pt-4 list-disc"
             />
-            <Description short={product.short_description} long={product.description} attributes={product.attributes} />
+            <Description
+              title="Read More.."
+              titleClass="text-sm font-heading font-normal"
+              short={product.short_description}
+              long={product.description}
+              attributes={product.attributes}
+            />
             <div className="flex mt-3 items-center">
               {[...Array(Math.floor(product.average_rating))].map(
                 (_, index) => (
@@ -229,9 +244,21 @@ const SingleProduct = ({ slug }: { slug: string }) => {
                         <div className="flex">
                           {item.options.map((variation: any, idx: number) => (
                             <div
-                              className={`text-xs font-body font-bold p-2 mt-2 mr-2 rounded shadow-md shadow-slate-100 dark:shadow-gray-800 cursor-pointer hover:bg-slate-100 hover:text-black transition-all duration-300 ${selectedVariation?.filter((v:any) => v.id ===item.id && v.value == variation ).length > 0  ? 'bg-pink-500 text-white' : ''}`}
+                              className={`text-xs font-body font-bold p-2 mt-2 mr-2 rounded shadow-md shadow-slate-100 dark:shadow-gray-800 cursor-pointer hover:bg-slate-100 hover:text-black transition-all duration-300 ${
+                                selectedVariation?.filter(
+                                  (v: any) =>
+                                    v.id === item.id && v.value == variation
+                                ).length > 0
+                                  ? "bg-pink-500 text-white"
+                                  : ""
+                              }`}
                               key={idx}
-                              onClick={() => handleVariationSelect({id:item.id, value:variation})}
+                              onClick={() =>
+                                handleVariationSelect({
+                                  id: item.id,
+                                  value: variation,
+                                })
+                              }
                             >
                               {variation}
                             </div>
@@ -247,43 +274,79 @@ const SingleProduct = ({ slug }: { slug: string }) => {
 
           <div className="pt-6 flex gap-2 items-center justify-center">
             <div className="basis-2/12">
-            <Select onValueChange={(value) => handleQty(Number(value))}>
-              <SelectTrigger className="w-[80px] h-[55px] focus:ring-slate-50 hover:ring-slate-500">
+              <Select onValueChange={(value) => handleQty(Number(value))}>
+                <SelectTrigger className="w-[80px] h-[55px] focus:ring-slate-50 hover:ring-slate-500">
                   <SelectValue placeholder="1" />
-              </SelectTrigger>
-              <SelectContent className="">
+                </SelectTrigger>
+                <SelectContent className="">
                   <SelectItem value="1">1</SelectItem>
                   <SelectItem value="2">2</SelectItem>
                   <SelectItem value="3">3</SelectItem>
                   <SelectItem value="4">4</SelectItem>
                   <SelectItem value="5">5</SelectItem>
-              </SelectContent>
-          </Select>
+                </SelectContent>
+              </Select>
             </div>
-            <div className="basis-5/12 text-center py-4 px-4 w-full shadow-sm cursor-pointer uppercase font-heading bg-pink-500 text-white text-sm font-medium hover:bg-pink-700 transition-all duration-300" onClick={() => handleAddItem()}>Add to Cart</div>
-            <div className="basis-5/12 text-center py-4 px-4 shadow-sm cursor-pointer uppercase font-heading bg-black dark:bg-slate-100 dark:text-black dark:hover:bg-pink-500 dark:hover:text-white text-white text-sm font-medium hover:bg-pink-500 transition-all duration-300">Buy Now</div>
+            <div
+              className="basis-5/12 text-center py-4 px-4 w-full shadow-sm cursor-pointer uppercase font-heading bg-pink-500 text-white text-sm font-medium hover:bg-pink-700 transition-all duration-300"
+              onClick={() => handleAddItem()}
+            >
+              Add to Cart
+            </div>
+            <div className="basis-5/12 text-center py-4 px-4 shadow-sm cursor-pointer uppercase font-heading bg-black dark:bg-slate-100 dark:text-black dark:hover:bg-pink-500 dark:hover:text-white text-white text-sm font-medium hover:bg-pink-500 transition-all duration-300">
+              Buy Now
+            </div>
           </div>
 
           <div className="flex text-xs font-bold font-body pt-8 items-center justify-between gap-2 uppercase">
-            <div className="flex gap-2 cursor-pointer items-center"><FeatherIcon icon="heart" size={14} strokeWidth={3}></FeatherIcon> Add to Wishlist</div>
-            <div className="flex gap-2 cursor-pointer items-center"><FeatherIcon icon="share-2" size={14} strokeWidth={3}></FeatherIcon> Share</div>
+            <div className="flex gap-2 cursor-pointer items-center">
+              <FeatherIcon icon="heart" size={14} strokeWidth={3}></FeatherIcon>{" "}
+              Add to Wishlist
+            </div>
+            <div className="flex gap-2 cursor-pointer items-center">
+              <FeatherIcon
+                icon="share-2"
+                size={14}
+                strokeWidth={3}
+              ></FeatherIcon>{" "}
+              Share
+            </div>
           </div>
           <div className=" text-xs pt-5 flex font-heading uppercase justify-between items-center">
             <div className=" flex flex-col font-heading uppercase space-y-1">
               <span>SKU : {product.sku} </span>
-              <span>Category : {product.categories.map((item:any,idx:number) => <>{item.name}</>)} </span>
+              <span>
+                Category :{" "}
+                {product.categories.map((item: any, idx: number) => (
+                  <>{item.name}</>
+                ))}{" "}
+              </span>
             </div>
             <div className=" flex flex-col font-heading uppercase space-y-1">
-              <span><Reviews id={product.id} allowed={product.reviews_allowed}/> </span>
-              <span><SizeGuide/> </span>
+              <span>
+                <Reviews id={product.id} allowed={product.reviews_allowed} />{" "}
+              </span>
+              <span>
+                <Description
+                  title="Description"
+                  titleClass="text-xs font-heading font-normal uppercase"
+                  short={product.short_description}
+                  long={product.description}
+                  attributes={product.attributes}
+                />
+              </span>
             </div>
           </div>
         </div>
 
         <div className="font-heading font-medium basis-3/12 p-4">
           Releated Products
-          <div className="hidden md:block pt-6"><RelatedList ids={product.related_ids}/></div>
-          <div className="md:hidden pt-6"><RelatedGrid ids={product.related_ids}/></div>
+          <div className="hidden md:block pt-6">
+            <RelatedList ids={product.related_ids} />
+          </div>
+          <div className="md:hidden pt-6">
+            <RelatedGrid ids={product.related_ids} />
+          </div>
         </div>
       </div>
     </div>
