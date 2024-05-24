@@ -64,16 +64,16 @@ const Navbar: React.FC<NavbarProps> = ({ background }) => {
   return (
     <>
    <div className={` font-body shadow-md shadow-slate-100 dark:shadow-gray-950 h-16 fixed w-full p-3 px-10 lg:px-10 m-auto z-50 bg-white dark:bg-gray-950 dark:border-slate-300/10 text-black dark:text-slate-200`}>
-        <div className="container flex justify-center items-center px-24">
-            <div className="flex justify-center  items-center">
-                <div className="absolute container left-0 top-5">
+        <div className=" flex items-center justify-between md:container">
+                <div className="">
                     {theme === 'dark' ? 
                     <Link href="/"><img src={Logo.src} alt="Logo" className="h-4 w-auto sm:h-[1.3rem] pl-2" /></Link>
                     :
                     <Link href="/"><img src={Logo.src} alt="Logo" className="h-5 w-auto sm:h-6" /></Link>}
                 </div>
-                </div>
-                <div className="flex justify-center hidden md:block">
+
+                
+                <div className="hidden md:block">
                     <NavigationMenu>
                     <NavigationMenuList>
                         <NavigationMenuItem>
@@ -148,7 +148,8 @@ const Navbar: React.FC<NavbarProps> = ({ background }) => {
                     </NavigationMenuList>
                     </NavigationMenu>
                 </div>
-                <div className="absolute right-10 hidden md:flex items-center">
+                <div className="hidden md:flex items-center">
+                    <Link href="/cart" className=" mr-4"><div className=""><FeatherIcon icon="shopping-cart" className="p-[3px] " strokeWidth="2" size="24"/></div></Link>
                     <Button variant="outline" className="shadow-md"><Link href="/login">Login</Link></Button>
                     {
                         theme === 'dark' ? 
@@ -161,7 +162,8 @@ const Navbar: React.FC<NavbarProps> = ({ background }) => {
                         </div>
                     }
                 </div>
-                <div className="block md:hidden float-end right-6 top-4 absolute">
+                <div className="flex md:hidden">
+                <Link href="/cart" className=" mr-4"><div className=""><FeatherIcon icon="shopping-cart" className="p-[3px] " strokeWidth="2" size="24"/></div></Link>
                     <Drawer>
                         <DrawerTrigger><FeatherIcon icon="menu"/>  </DrawerTrigger>
                         <DrawerContent className="h-[80vh]">
@@ -185,7 +187,7 @@ const Navbar: React.FC<NavbarProps> = ({ background }) => {
                         </Drawer>
 
                 </div>
-        </div>
+    </div>
     </div>
     </>
   )

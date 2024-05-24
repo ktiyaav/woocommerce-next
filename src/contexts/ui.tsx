@@ -30,9 +30,11 @@ const uiReducer = (state : State, action: ActionType) => {
             }
         case "ADD_TO_CART":
             if (action.value.product_id !== null) {
+                console.log('called')
                 const existingItemIndex = state.cart?.findIndex((item: any) => item.product_id === action.value.product_id);
                 if (existingItemIndex !== -1) {
                     const updatedCart = [...state.cart];
+                    console.log(updatedCart[existingItemIndex].quantity)
                     updatedCart[existingItemIndex].quantity = Number(updatedCart[existingItemIndex].quantity) + 1;
                     return {
                         ...state,
@@ -67,7 +69,7 @@ export const UIProvider : React.FC<{children: React.ReactNode}> = ({ children })
     const [state, dispatch] = useReducer(uiReducer, initialState);
 
     const setTheme = (value:string) => dispatch({ type: "SET_THEME", value:value });
-    const addToCart = (value:string) => dispatch({ type: "ADD_TO_CART", value:value });
+    const addToCart = (value: { product_id: number; variation_id: number | null; quantity: number }) => dispatch({ type: "ADD_TO_CART", value:value });
     const clearCart = () => dispatch({ type: "CLEAR_CART" });
 
     const value = React.useMemo( () => ({

@@ -6,6 +6,7 @@ import { Skeleton } from "../../ui/skeleton";
 import FeatherIcon from "feather-icons-react";
 import { CURRENCY, TAX_STATUS } from "@/config/constants";
 import Link from "next/link";
+import { toast } from "sonner";
 
 import {
   Select,
@@ -53,7 +54,6 @@ const SingleProduct = ({ slug }: { slug: string }) => {
           )
             .then((variationProducts) => {
               const filteredVariations = variationProducts.filter(Boolean);
-              console.log(filteredVariations);
               setVariations((prevVariations: any) => [
                 prevVariations,
                 filteredVariations,
@@ -65,7 +65,6 @@ const SingleProduct = ({ slug }: { slug: string }) => {
         }
         setProduct(data[0]);
         data[0]?.images[0]?.src ? setImage(data[0]?.images[0]?.src) : "";
-        console.log(data);
       } else {
         console.log("failed to fetch catefories");
       }
@@ -74,22 +73,53 @@ const SingleProduct = ({ slug }: { slug: string }) => {
   }, []);
 
   const handleAddItem = () => {
-    addToCart({
-      product_id: product.id,
-      variation_id: null,
-      quantity: qty,
+    console.log(qty)
+    console.log(cart)
+    console.log('calling')
+    if (
+      selectedVariation?.length ===
+      product.attributes.filter((item: any) => item.variation ?? true).length
+    ) {
+      addToCart({
+        product_id: product.id,
+        variation_id: null,
+        quantity: qty,
+      });
+      console.log(cart)
+      toast.success("Added to Cart", {
+        description: "Selected item is added to your cart",
+        // action: {
+        //   label: "X",
+        //   onClick: () => console.log("Undo"),
+        // },
+      });
+    } else {
+      toast.warning("Attribute not selected", {
+        description: "Please choose from an option before adding to cart!",
+        // action: {
+        //   label: "X",
+        //   onClick: () => console.log("Undo"),
+        // },
+      });
+    }
+  };
+  const clearVariations = () => {
+    setSelectedVariation([]);
+    toast.success("Options cleared", {
+      description: "You can now select again!",
+      // action: {
+      //   label: "X",
+      //   onClick: () => console.log("Undo"),
+      // },
     });
-    console.log(cart);
   };
   const handleQty = (qty: number) => {
     setQty(qty);
-    console.log(cart);
   };
   const handleVariationSelect = (variation_details: {
     id: number;
     value: any;
   }) => {
-    console.log(selectedVariation);
     setSelectedVariation((prevVariations: any) => {
       const newData = prevVariations?.filter(
         (variation: any) => variation.id !== variation_details.id
@@ -262,6 +292,14 @@ const SingleProduct = ({ slug }: { slug: string }) => {
                   }
                 })}
               </>
+            )}
+            {product.type === "variable" && selectedVariation?.length > 0 && (
+              <div
+                className="text-xs uppercase font-heading py-1 px-2 bg-slate-500 cursor-pointer inline rounded text-white hover:bg-slate-950 transition-all duration-200 ease-in-out"
+                onClick={() => clearVariations()}
+              >
+                Clear
+              </div>
             )}
           </div>
 
