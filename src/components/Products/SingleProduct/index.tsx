@@ -102,17 +102,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
   };
 
   if (!product) {
-    return (
-      <div className="text-black md:container dark:text-white flex flex-col md:flex-row gap-5">
-        <div className="basis-9/12 border-r-2 p-4">
-          <SingleProductSkeleton />
-        </div>
-        <div className="font-heading font-medium basis-3/12 p-4">
-          <div className="pb-4">Releated Products</div>
-          <RelatedListSkeleton />
-        </div>
-      </div>
-    );
+    return <SingleProductSkeleton />;
   }
   return (
     <div className="flex md:container flex-col items-center">
@@ -177,7 +167,6 @@ const SingleProduct = ({ slug }: { slug: string }) => {
           </Link>
 
           <div className="">
-
             {/* <div
               dangerouslySetInnerHTML={{ __html: product.short_description }}
               className="text-sm font-heading font-thin pt-4 list-disc"
@@ -190,37 +179,37 @@ const SingleProduct = ({ slug }: { slug: string }) => {
               attributes={product.attributes}
             /> */}
 
-            {product.average_rating > 0 && 
-            <div className="flex mt-3 items-center">
-              {[...Array(Math.floor(product.average_rating))].map(
-                (_, index) => (
-                  <div key={index} className="">
+            {product.average_rating > 0 && (
+              <div className="flex mt-3 items-center">
+                {[...Array(Math.floor(product.average_rating))].map(
+                  (_, index) => (
+                    <div key={index} className="">
+                      <FeatherIcon
+                        icon="star"
+                        strokeWidth={1}
+                        size={12}
+                        fill="#ffb22d"
+                        className="text-[#ffb22d]"
+                      />
+                    </div>
+                  )
+                )}
+                {product.average_rating % 1 >= 0.5 && (
+                  <div className="">
                     <FeatherIcon
                       icon="star"
-                      strokeWidth={1}
-                      size={12}
-                      fill="#ffb22d"
+                      strokeWidth={3}
+                      size={11}
+                      fill="#fff"
                       className="text-[#ffb22d]"
                     />
                   </div>
-                )
-              )}
-              {product.average_rating % 1 >= 0.5 && (
-                <div className="">
-                  <FeatherIcon
-                    icon="star"
-                    strokeWidth={3}
-                    size={11}
-                    fill="#fff"
-                    className="text-[#ffb22d]"
-                  />
+                )}
+                <div className="text-xs pl-2">
+                  {product.rating_count} customer review(s)
                 </div>
-              )}
-              <div className="text-xs pl-2">
-                {product.rating_count} customer review(s)
               </div>
-            </div>
-            }
+            )}
           </div>
 
           <div className="text-3xl font-heading font-normal pt-6">
