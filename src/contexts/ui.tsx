@@ -18,7 +18,23 @@ type ActionType =
 
 const initialState = {
     theme : 'light',
-    cart: []
+    cart: [
+        {
+            "product_id": 12560,
+            "variation_id": null,
+            "quantity": 5
+        },
+        {
+            "product_id": 12076,
+            "variation_id": null,
+            "quantity": 3
+        },
+        {
+            "product_id": 12078,
+            "variation_id": null,
+            "quantity": 1
+        }
+    ]
 }
 
 const uiReducer = (state : State, action: ActionType) => {

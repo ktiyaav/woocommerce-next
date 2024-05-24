@@ -45,7 +45,7 @@ interface NavbarProps {
     background: string;
 }
 const Navbar: React.FC<NavbarProps> = ({ background }) => {
-  const { theme, setTheme } = useUI();
+  const { theme, setTheme, cart } = useUI();
     
   React.useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -149,7 +149,7 @@ const Navbar: React.FC<NavbarProps> = ({ background }) => {
                     </NavigationMenu>
                 </div>
                 <div className="hidden md:flex items-center">
-                    <Link href="/cart" className=" mr-4"><div className=""><FeatherIcon icon="shopping-cart" className="p-[3px] " strokeWidth="2" size="24"/></div></Link>
+                    <Link href="/cart" className=" mr-4"><div className=""><FeatherIcon icon="shopping-cart" className="p-[3px] " strokeWidth="2" size="24"/></div><span className="text-xs bg-slate-100 rounded-[100%] absolute w-[4px] h-[4px] top-[18px] l-[10px] r-[10px] ml-6 mt-4">{cart.length}</span></Link>
                     <Button variant="outline" className="shadow-md"><Link href="/login">Login</Link></Button>
                     {
                         theme === 'dark' ? 
