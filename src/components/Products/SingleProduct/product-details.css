@@ -1,30 +1,30 @@
 
-table{
+.product-details table{
     margin-top:10px;
 
 }
-p{ 
+.product-details p{ 
     margin-bottom: 10px;
     margin-top:10px;
 }
 
-ul{
+.product-details ul{
     margin: 10px 0;
 }
 
-td{
+.product-details td{
     background-color: rgb(248 250 252 / var(--tw-bg-opacity));
     padding: 5px;
     border: 1px solid #d6d6d6;
 }
 
-tr:first-child > td{
+.product-details tr:first-child > td{
     background-color: rgb(241 245 249 / var(--tw-bg-opacity));
     font-weight: 400;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-th{
+.product-details th{
     border: 1px solid #d6d6d6;
 }

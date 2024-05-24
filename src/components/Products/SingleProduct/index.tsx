@@ -177,7 +177,8 @@ const SingleProduct = ({ slug }: { slug: string }) => {
           </Link>
 
           <div className="">
-            <div
+
+            {/* <div
               dangerouslySetInnerHTML={{ __html: product.short_description }}
               className="text-sm font-heading font-thin pt-4 list-disc"
             />
@@ -187,7 +188,9 @@ const SingleProduct = ({ slug }: { slug: string }) => {
               short={product.short_description}
               long={product.description}
               attributes={product.attributes}
-            />
+            /> */}
+
+            {product.average_rating > 0 && 
             <div className="flex mt-3 items-center">
               {[...Array(Math.floor(product.average_rating))].map(
                 (_, index) => (
@@ -217,6 +220,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
                 {product.rating_count} customer review(s)
               </div>
             </div>
+            }
           </div>
 
           <div className="text-3xl font-heading font-normal pt-6">
@@ -234,9 +238,9 @@ const SingleProduct = ({ slug }: { slug: string }) => {
                 {product.attributes.map((item: any, idx: number) => {
                   if (item.variation) {
                     return (
-                      <>
+                      <div className="mb-4">
                         <div
-                          className="uppercase font-heading font-medium text-sm"
+                          className="uppercase font-heading font-medium text-sm pb-2"
                           key={idx}
                         >
                           {item.name}
@@ -244,7 +248,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
                         <div className="flex">
                           {item.options.map((variation: any, idx: number) => (
                             <div
-                              className={`text-xs font-body font-bold p-2 mt-2 mr-2 rounded shadow-md shadow-slate-100 dark:shadow-gray-800 cursor-pointer hover:bg-slate-100 hover:text-black transition-all duration-300 ${
+                              className={`text-xs font-body font-bold p-2 mr-2 mb-2 rounded shadow-md shadow-slate-100 dark:shadow-gray-800 cursor-pointer hover:bg-slate-100 hover:text-black transition-all duration-300 ${
                                 selectedVariation?.filter(
                                   (v: any) =>
                                     v.id === item.id && v.value == variation
@@ -264,7 +268,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
                             </div>
                           ))}
                         </div>
-                      </>
+                      </div>
                     );
                   }
                 })}

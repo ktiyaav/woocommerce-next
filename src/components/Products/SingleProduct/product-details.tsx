@@ -16,7 +16,7 @@ export const Description = ({title, titleClass, short, long, attributes}:{title:
       <SheetContent className="xl:w-[1000px] xl:max-w-none sm:w-[400px] sm:max-w-[540px]">
         <SheetHeader>
           <SheetTitle className="font-heading font-normal uppercase border-b-2">Description</SheetTitle>
-          <SheetDescription className="overflow-y-scroll max-h-[90vh] text-black">
+          <SheetDescription className="overflow-y-scroll max-h-[90vh] text-black product-details">
             <div
                 dangerouslySetInnerHTML={{ __html: short }}
                 className="text-base text-left font-heading font-thin pt-4 list-disc"
