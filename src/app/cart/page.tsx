@@ -4,6 +4,7 @@ import { ENDPOINTS } from "@/config/routes";
 import { useUI } from "@/contexts/ui";
 import WOOAPI from "@/utils/woo";
 import FeatherIcon from "feather-icons-react";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 export default function CartPage() {
@@ -37,8 +38,8 @@ export default function CartPage() {
     return null;
   }
   return (
-    <div className="container">
-      <div className="relative shadow-md sm:rounded-lg   max-w-[100vw]">
+    <div className="container flex flex-col justify-center items-center">
+      <div className="relative shadow-md sm:rounded-lg w-full  max-w-[100vw]">
         <table className="w-full text-sm text-left rtl:text-right text-black dark:text-gray-400">
           <thead className="text-xs text-black uppercase font-heading bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -114,6 +115,7 @@ export default function CartPage() {
           </tbody>
         </table>
       </div>
+      <Link href="/checkout" className="border p-4 mt-10 rounded shadow-sm items-center justify-center uppercase max-w-md bg-pink-500 text-white cursor-pointer flex font-heading font-medium">Proceed To Checkout <FeatherIcon icon="external-link" size="18" className="ml-2" strokeWidth={3}/></Link>
     </div>
   );
 }
