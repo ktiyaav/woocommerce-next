@@ -40,3 +40,10 @@ body {
   transition-property: transform;
   display: block;
 }
+
+@media (min-width: 640px) {
+  .container{
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
