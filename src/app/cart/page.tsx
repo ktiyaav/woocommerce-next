@@ -79,7 +79,9 @@ export default function CartPage() {
                             className=" aspect-square object-cover"
                           />
                         </div>
-                        <div className="text-sm font-body max-w-xs sm:max-w-sm  md:max-w-md text-wrap">{product.name}</div>
+                        <div className="text-sm font-body max-w-xs sm:max-w-sm  md:max-w-md text-wrap">
+                          {product.name}
+                        </div>
                       </div>
                     </th>
                     <td className="px-6 py-4 hidden md:table-cell font-heading font-bold">
@@ -115,7 +117,18 @@ export default function CartPage() {
           </tbody>
         </table>
       </div>
-      <Link href="/checkout" className="border p-4 mt-10 rounded shadow-sm items-center justify-center uppercase max-w-md bg-pink-500 text-white cursor-pointer flex font-heading font-medium">Proceed To Checkout <FeatherIcon icon="external-link" size="18" className="ml-2" strokeWidth={3}/></Link>
+      <Link
+        href="/checkout"
+        className="border p-4 mt-10 rounded shadow-sm items-center justify-center uppercase max-w-md bg-pink-500 text-white cursor-pointer flex font-heading font-medium"
+      >
+        Proceed To Checkout
+        <FeatherIcon
+          icon="external-link"
+          size="18"
+          className="ml-2"
+          strokeWidth={3}
+        />
+      </Link>
     </div>
   );
 }
