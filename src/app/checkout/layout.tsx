@@ -5,6 +5,7 @@ import Footer from "@components/Footer";
 import { UIProvider } from "@/contexts/ui";
 import { Quicksand, Jost } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import Script from 'next/script';
 
 const jost = Jost({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
@@ -42,6 +43,10 @@ export default function CheckoutLayout({
           position="top-center" 
           richColors 
           // closeButton 
+        />
+        <Script
+          id="razorpay-checkout-js"
+          src="https://checkout.razorpay.com/v1/checkout.js"
         />
       </body>
     </html>
