@@ -21,17 +21,17 @@ const initialState = {
     cart: [
         {
             "product_id": 12560,
-            "variation_id": null,
+            "variation_id": 1,
             "quantity": 5
         },
         {
             "product_id": 12076,
-            "variation_id": null,
+            "variation_id": 1,
             "quantity": 3
         },
         {
             "product_id": 12078,
-            "variation_id": null,
+            "variation_id": 1,
             "quantity": 1
         }
     ]

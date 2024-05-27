@@ -26,9 +26,13 @@ import { ENDPOINTS } from "@/config/routes";
 import { useUI } from "@/contexts/ui";
 import Razorpay from "razorpay";
 import { createOrderId } from "@/utils/payment";
+import { redirect } from 'next/navigation'
+import ThankyouPage from "@/components/Checkout/Thankyou";
 
 const CheckoutPage = () => {
-  
+  const [redirectToThankYou, setRedirectToThankYou] = useState<boolean>(false);
+  const [orderData, setOrderData] = useState<any>();
+
   const [cartProducts, setCartProducts] = useState<any>();
   const [cartTotals, setCartTotals] = useState<number>(0);
   
@@ -220,7 +224,7 @@ const CheckoutPage = () => {
         country: "IN",
       },
       line_items: [
-        cart
+        cart[0]
       ],
       shipping_lines: [
         {
@@ -230,11 +234,11 @@ const CheckoutPage = () => {
         },
       ],
     };
-
+    console.log(data);
     const order = await WOOAPI.post(ENDPOINTS.ORDERS, data);
     if (order.status == 201) {
-      console.log(order.data);
-      return order.orderId;
+      setOrderData(order.data);
+      setRedirectToThankYou(true);
     } else {
       console.log("failed to create order in woocommerce");
     }
@@ -287,7 +291,9 @@ const CheckoutPage = () => {
       console.log(error);
     }
   };
-
+  if(redirectToThankYou) {
+    return <ThankyouPage data={orderData}/>
+  }
   return (
     <div className="pb-24  max-w-5xl m-auto ">
       <div className="flex font-heading flex-col items-center border-b py-4 sm:flex-row">
@@ -491,7 +497,7 @@ const CheckoutPage = () => {
             onClick={() => {
               checkoutState === 1 && handleStateChange(2);
               checkoutState === 2 && handleStateChange(3);
-              checkoutState === 3 && processPayment();
+              checkoutState === 3 && paymentMethod.name === 'cod' ? wooOrder() : processPayment();
             }}
             className={`border p-4 mt-10 rounded shadow-sm items-center justify-center uppercase max-w-md ${checkoutState === 3 ? "bg-green-500" : "bg-pink-500"
               } text-white cursor-pointer flex font-heading font-medium ${checkoutState === 3 ? "hover:bg-green-700" : "hover:bg-pink-700"

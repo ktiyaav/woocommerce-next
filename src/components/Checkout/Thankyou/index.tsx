@@ -2,14 +2,9 @@
 import FeatherIcon from "feather-icons-react";
 import React, { useEffect, useState } from "react";
 import RelatedList from "@/components/Products/RelatedList";
-import { useRouter } from "next/router"
 
-const ThankyouPage = () => {
-    const router = useRouter()
-    const {
-    query: { data },
-    } = router
-    console.log(data);
+const ThankyouPage = ({data} : {data:any}) => {
+    console.log(data)
     return (
         <div className="pb-24  max-w-5xl m-auto ">
             <div className="flex font-heading flex-col items-center border-b py-4 sm:flex-row">
