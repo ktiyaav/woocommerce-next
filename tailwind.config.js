@@ -41,6 +41,9 @@ module.exports = {
         shine: "shine 1s",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        'spin-slow': 'spin 3s linear infinite',
+        rotate: 'rotate(360deg) linear',
+        spin1 : 'spin 1s linear 1s'
       },
     },
   },

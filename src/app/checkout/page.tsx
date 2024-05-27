@@ -28,8 +28,10 @@ import Razorpay from "razorpay";
 import { createOrderId } from "@/utils/payment";
 import { redirect } from 'next/navigation'
 import ThankyouPage from "@/components/Checkout/Thankyou";
+import {HashLoader} from 'react-spinners';
 
 const CheckoutPage = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [redirectToThankYou, setRedirectToThankYou] = useState<boolean>(false);
   const [orderData, setOrderData] = useState<any>();
 
@@ -242,7 +244,10 @@ const CheckoutPage = () => {
       console.log("failed to create order in woocommerce");
     }
   };
-
+  const placeOrder = () => {
+    setLoading(true);
+    paymentMethod.name  === 'cod' ? wooOrder() : processPayment();
+  }
   const processPayment = async () => {
     try {
       const amount = cartTotals + Number(shipping.price);
@@ -299,13 +304,12 @@ const CheckoutPage = () => {
   return (
     <div className="pb-24  max-w-5xl m-auto ">
       <div className="flex font-heading flex-col items-center border-b py-4 sm:flex-row">
-        <a
-          href="#"
+        <h4
           className="text-xl font-medium text-green-500 flex items-center space-x-2 uppercase"
         >
           <FeatherIcon icon="check-circle" className="text-green-500" />{" "}
           <span>Secure Order Form</span>
-        </a>
+        </h4>
         <div className="mt-4 py-2 text-xs sm:mt-0 sm:ml-auto sm:text-base">
           <div className="flex items-center justify-start space-x-3">
             <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
@@ -328,14 +332,6 @@ const CheckoutPage = () => {
 
       <div className="flex">
         <div className="px-6 pt-8 md:basis-2/3 flex flex-col bg-white shadow-xl pb-20">
-          {checkoutState > 1 && (
-            <div
-              className="pb-4 flex space-x-0 items-center cursor-pointer hover:text-blue-800"
-              onClick={() => handleStateChange(checkoutState - 1)}
-            >
-              <FeatherIcon icon="chevrons-left" size={20} /> <span>Back</span>
-            </div>
-          )}
 
           <span className=" font-heading text-xl font-medium text-black">
             {checkoutState === 1 ?? "Customer Details"}
@@ -404,7 +400,7 @@ const CheckoutPage = () => {
                   <span className="text-base font-heading text-black font-normal ">
                     Show Order Summary
                   </span>
-                  <span className="text-black font-bold ml-auto">{CURRENCY}{cartTotals + Number(shipping.price)}</span>
+                  <span className="text-black font-bold float-right text-right ml-auto">{CURRENCY}{cartTotals + Number(shipping.price)}</span>
                 </AccordionTrigger>
                 <AccordionContent className="pb-0">
                   {cart.map((item: any, idx: number) => {
@@ -549,18 +545,25 @@ const CheckoutPage = () => {
             onClick={() => {
               checkoutState === 1 && handleStateChange(2);
               checkoutState === 2 && handleStateChange(3);
-              checkoutState === 3 && paymentMethod.name === 'cod' ? wooOrder() : processPayment();
+              checkoutState === 3 && placeOrder();
             }}
             className={`border p-4 mt-10 rounded shadow-sm items-center justify-center uppercase max-w-md ${checkoutState === 3 ? "bg-green-500" : "bg-pink-500"
-              } text-white cursor-pointer flex font-heading font-medium ${checkoutState === 3 ? "hover:bg-green-700" : "hover:bg-pink-700"
+              } text-white cursor-pointer flex space-x-1 font-heading font-medium ${checkoutState === 3 ? "hover:bg-green-700" : "hover:bg-pink-700"
               } transition-all ease-in duration-300`}
           >
-            {checkoutState === 1 && "Proceed to Delivery"}
-            {checkoutState === 2 && "Proceed to Payment"}
-            {checkoutState === 3 && "Order Now"}
-
-            <FeatherIcon icon="arrow-right-circle" size="18" className="ml-2" strokeWidth={3} />
+              {checkoutState === 1 && (<span className="">Proceed To Delivery</span>)}
+              {checkoutState === 2 && (<span className="">Proceed To Payment</span>)}
+              {checkoutState === 3 && (<span className="">Order Now</span>)}
+              {loading ? <FeatherIcon icon="loader" className="animate-spin-slow" size="18" strokeWidth={3}/> : <FeatherIcon icon="arrow-right-circle" size="18" className="ml-2" strokeWidth={3} />}
           </div>
+          {checkoutState > 1 && (
+            <div
+              className="pb-4 pt-4 flex space-x-0 items-center cursor-pointer hover:text-blue-800"
+              onClick={() => handleStateChange(checkoutState - 1)}
+            >
+              <FeatherIcon icon="chevrons-left" size={20} /> <span>Back</span>
+            </div>
+          )}
         </div>
 
         <div className="mt-10 px-4 pt-8 lg:mt-0 hidden  md:flex md:flex-col md:basis-1/3 space-y-4 bg-pink-100 shadow-xl pb-20">
