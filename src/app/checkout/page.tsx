@@ -35,7 +35,7 @@ const CheckoutPage = () => {
 
   const [cartProducts, setCartProducts] = useState<any>();
   const [cartTotals, setCartTotals] = useState<number>(0);
-  
+
   const [email, setEmail] = useState<string>("");
   const [firstName, setfirstName] = useState<string>("");
   const [lastName, setlastName] = useState<string>("");
@@ -67,27 +67,26 @@ const CheckoutPage = () => {
           })
         );
 
-        const cartTotals = productsData.reduce((total, productData, idx) => {
-          if (productData) {
-            const product = productData.find((p: any) => p.id === cart[idx].product_id);
-            if (product) {
-              total += Number(product.price) * Number(cart[idx].quantity);
-            }
+        let totals: number = 0; // Initialize totals to 0
+
+        await Promise.all(cart.map(async (item: any, idx: number) => {
+          const product = productsData.find((p: any) => p.id === item.product_id);
+          if (product) {
+            totals = totals + Number(product.price);
           }
-          return total;
-        }, 0);
-  
+        }));
+
         setCartProducts(productsData);
-        setCartTotals(cartTotals);
+        setCartTotals(totals);
 
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
-  
+
     fetchProducts();
   }, [cart]);
-  
+
 
   const fields = [
     {
@@ -243,13 +242,13 @@ const CheckoutPage = () => {
       console.log("failed to create order in woocommerce");
     }
   };
-  
+
   const processPayment = async () => {
     try {
       const amount = cartTotals + Number(shipping.price);
       const orderId: string = await createOrderId(amount);
       const options = {
-        key: process.env.key_id,
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
         amount: 1,
         currency: "INR",
         name: "Order Payment",
@@ -291,8 +290,11 @@ const CheckoutPage = () => {
       console.log(error);
     }
   };
-  if(redirectToThankYou) {
-    return <ThankyouPage data={orderData}/>
+  if (!cartProducts) {
+    return 'checkout-loader';
+  }
+  if (redirectToThankYou) {
+    return <ThankyouPage data={orderData} />
   }
   return (
     <div className="pb-24  max-w-5xl m-auto ">
@@ -400,10 +402,60 @@ const CheckoutPage = () => {
                 <AccordionTrigger className="flex justify-start space-x-3">
                   <FeatherIcon icon="shopping-cart" size={20} />
                   <span className="text-base font-heading text-black font-normal ">
-                    Show order summary
+                    Show Order Summary
                   </span>
+                  <span className="text-black font-bold ml-auto">{CURRENCY}{cartTotals + Number(shipping.price)}</span>
                 </AccordionTrigger>
-                <AccordionContent>Show list of products added</AccordionContent>
+                <AccordionContent className="pb-0">
+                  {cart.map((item: any, idx: number) => {
+                    const product = cartProducts.find((p: any) => p.id === item.product_id);
+                    if (product) {
+                      return (
+                        <div
+                          key={idx}
+                          className="flex items-center odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700"
+                        >
+                          <div className="basis-3/4 px-2 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <div className="flex items-center space-x-3">
+                              <div className="max-w-10">
+                                <img
+                                  src={product.images[0]?.src}
+                                  alt=""
+                                  className=" aspect-square object-cover"
+                                />
+                              </div>
+                              <div className=" text-left text-xs font-body max-w-xs sm:max-w-sm  md:max-w-md text-wrap">
+                                {product.name}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="basis-1/5 px-2 py-3">
+                            <div className="flex flex-col md:flex-row border items-center m-auto justify-between p-2 group hover:border-black">
+                              <FeatherIcon
+                                icon="plus"
+                                size={18}
+                                className="cursor-pointer"
+                              />{" "}
+                              {item.quantity}{" "}
+                              <FeatherIcon
+                                icon="minus"
+                                size={18}
+                                className="cursor-pointer"
+                              />
+                            </div>
+                          </div>
+                          <div className="basis-1/5 px-2 py-3 font-heading font-bold text-right">
+                            {CURRENCY}
+                            {Number(product.price) * Number(item.quantity)}
+                          </div>
+                        </div>
+                      );
+                    }
+                  })}
+                  <div className="flex px-2 py-0 pt-4 font-heading text-base font-medium text-black  justify-between"><span>Subtotal </span> {CURRENCY}{cartTotals}</div>
+                  <div className="flex px-2 py-0 pb-2 font-heading text-base font-medium text-black justify-between border-b "><span>Shipping </span> {CURRENCY}{shipping && shipping.price}</div>
+                  <div className="flex px-2 py-2 font-heading text-xl font-medium text-black justify-between "><span>Total</span> {CURRENCY}{cartTotals + Number(shipping.price)} </div>
+                </AccordionContent>
               </AccordionItem>
             </Accordion>
           )}
