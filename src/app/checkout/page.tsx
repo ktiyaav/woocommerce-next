@@ -28,6 +28,7 @@ import Razorpay from "razorpay";
 import { createOrderId } from "@/utils/payment";
 
 const CheckoutPage = () => {
+  
   const [cartProducts, setCartProducts] = useState<any>();
   const [cartTotals, setCartTotals] = useState<number>(0);
   
@@ -41,8 +42,9 @@ const CheckoutPage = () => {
   const [number, setNumber] = useState<string>("");
 
   const [checkoutState, setCheckoutState] = useState<number>(1);
-  const [DeliveryMethod, setDeliveryMethod] = useState<string>("standard-delivery");
-  const [paymentMethod, setPaymentMethod] = useState<string>("cod");
+  const [shipping, setShipping] = useState<any>();
+  const [paymentMethod, setPaymentMethod] = useState<any>();
+
   const [coupon, setCouponUsed] = useState<string>("");
 
   const { cart } = useUI();
@@ -186,14 +188,14 @@ const CheckoutPage = () => {
     setCheckoutState(step);
   };
 
-  const handleDelivery = (way: string) => setDeliveryMethod(way);
+  const handleDelivery = (way: string) => setShipping(way);
   const handlePayment = (way: string) => setPaymentMethod(way);
   const applyCoupon = () => null;
 
   const wooOrder = async () => {
     const data = {
-      payment_method: "cod",
-      payment_method_title: "Cash on Delivery",
+      payment_method: paymentMethod.name,
+      payment_method_title: paymentMethod.label,
       set_paid: false,
       billing: {
         first_name: firstName,
@@ -222,9 +224,9 @@ const CheckoutPage = () => {
       ],
       shipping_lines: [
         {
-          method_id: "flat_rate",
-          method_title: "Standard Delivery",
-          total: "50.00",
+          method_id: shipping.name,
+          method_title: shipping.label,
+          total: shipping.price,
         },
       ],
     };
@@ -240,7 +242,8 @@ const CheckoutPage = () => {
   
   const processPayment = async () => {
     try {
-      const orderId: string = await createOrderId(cartTotals);
+      const amount = cartTotals + Number(shipping.price);
+      const orderId: string = await createOrderId(amount);
       const options = {
         key: process.env.key_id,
         amount: 1,
@@ -364,7 +367,7 @@ const CheckoutPage = () => {
                       value={item.name}
                       className="hidden peer"
                       required
-                      onClick={() => handleDelivery(item.name)}
+                      onClick={() => handleDelivery(item)}
                     />
                     <label
                       htmlFor={item.name}
@@ -449,7 +452,7 @@ const CheckoutPage = () => {
                       value={item.name}
                       className="hidden peer"
                       required
-                      onClick={() => handlePayment(item.name)}
+                      onClick={() => handlePayment(item)}
                     />
                     <label
                       htmlFor={item.name}
