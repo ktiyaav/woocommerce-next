@@ -1,6 +1,6 @@
 "use client";
 import FeatherIcon from "feather-icons-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -21,19 +21,67 @@ import {
 import { CURRENCY } from "@/config/constants";
 import RelatedList from "@/components/Products/RelatedList";
 import Link from "next/link";
+import WOOAPI from "@/utils/woo";
+import { ENDPOINTS } from "@/config/routes";
+import { useUI } from "@/contexts/ui";
+import Razorpay from "razorpay";
+import { createOrderId } from "@/utils/payment";
 
 const CheckoutPage = () => {
-  const [email, setEmail] = useState("");
-  const [firstName, setfirstName] = useState("");
-  const [lastName, setlastName] = useState("");
-  const [street, setStreet] = useState("");
-  const [town, setTown] = useState("");
-  const [zip, setZip] = useState("");
-  const [state, setState] = useState("");
-  const [number, setNumber] = useState("");
-  const [checkoutState, setCheckoutState] = useState(1);
-  const [DeliveryMethod, setDeliveryMethod] = useState("standard-delivery");
-  const [coupon, setCouponUsed] = useState("");
+  const [cartProducts, setCartProducts] = useState<any>();
+  const [cartTotals, setCartTotals] = useState<number>(0);
+  
+  const [email, setEmail] = useState<string>("");
+  const [firstName, setfirstName] = useState<string>("");
+  const [lastName, setlastName] = useState<string>("");
+  const [street, setStreet] = useState<string>("");
+  const [town, setTown] = useState<string>("");
+  const [zip, setZip] = useState<string>("");
+  const [state, setState] = useState<string>("");
+  const [number, setNumber] = useState<string>("");
+
+  const [checkoutState, setCheckoutState] = useState<number>(1);
+  const [DeliveryMethod, setDeliveryMethod] = useState<string>("standard-delivery");
+  const [paymentMethod, setPaymentMethod] = useState<string>("cod");
+  const [coupon, setCouponUsed] = useState<string>("");
+
+  const { cart } = useUI();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const productsData = await Promise.all(
+          cart.map(async (item: any) => {
+            const res = await WOOAPI.get(ENDPOINTS.PRODUCT + item.product_id);
+            if (res.status === 200) {
+              return res.data;
+            } else {
+              return null;
+            }
+          })
+        );
+
+        const cartTotals = productsData.reduce((total, productData, idx) => {
+          if (productData) {
+            const product = productData.find((p: any) => p.id === cart[idx].product_id);
+            if (product) {
+              total += Number(product.price) * Number(cart[idx].quantity);
+            }
+          }
+          return total;
+        }, 0);
+  
+        setCartProducts(productsData);
+        setCartTotals(cartTotals);
+
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+  
+    fetchProducts();
+  }, [cart]);
+  
 
   const fields = [
     {
@@ -137,9 +185,105 @@ const CheckoutPage = () => {
   const handleStateChange = (step: number) => {
     setCheckoutState(step);
   };
+
   const handleDelivery = (way: string) => setDeliveryMethod(way);
-  const handlePayment = () => null;
+  const handlePayment = (way: string) => setPaymentMethod(way);
   const applyCoupon = () => null;
+
+  const wooOrder = async () => {
+    const data = {
+      payment_method: "cod",
+      payment_method_title: "Cash on Delivery",
+      set_paid: false,
+      billing: {
+        first_name: firstName,
+        last_name: lastName,
+        address_1: street,
+        address_2: "",
+        city: town,
+        state: state,
+        postcode: zip,
+        country: "IN",
+        email: email,
+        phone: number,
+      },
+      shipping: {
+        first_name: firstName,
+        last_name: lastName,
+        address_1: street,
+        address_2: "",
+        city: town,
+        state: state,
+        postcode: zip,
+        country: "IN",
+      },
+      line_items: [
+        cart
+      ],
+      shipping_lines: [
+        {
+          method_id: "flat_rate",
+          method_title: "Standard Delivery",
+          total: "50.00",
+        },
+      ],
+    };
+
+    const order = await WOOAPI.post(ENDPOINTS.ORDERS, data);
+    if (order.status == 201) {
+      console.log(order.data);
+      return order.orderId;
+    } else {
+      console.log("failed to create order in woocommerce");
+    }
+  };
+  
+  const processPayment = async () => {
+    try {
+      const orderId: string = await createOrderId(cartTotals);
+      const options = {
+        key: process.env.key_id,
+        amount: 1,
+        currency: "INR",
+        name: "Order Payment",
+        description: "",
+        order_id: orderId,
+        handler: async function (response: any) {
+          const data = {
+            orderCreationId: orderId,
+            razorpayPaymentId: response.razorpay_payment_id,
+            razorpayOrderId: response.razorpay_order_id,
+            razorpaySignature: response.razorpay_signature,
+          };
+          const result = await fetch("/api/verify", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: { "Content-Type": "application/json" },
+          });
+          const res = await result.json();
+          if (res.isOk) wooOrder();
+          else {
+            console.log("Payment failed! Please try again");
+          }
+        },
+        prefill: {
+          name: firstName,
+          email: email,
+          contact: number,
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.on("payment.failed", function (response: any) {
+        alert(response.error.description);
+      });
+      paymentObject.open();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="pb-24  max-w-5xl m-auto ">
@@ -184,7 +328,7 @@ const CheckoutPage = () => {
 
           <span className=" font-heading text-xl font-medium text-black">
             {checkoutState === 1 ?? "Customer Details"}
-            {checkoutState === 1 && "Customer Details" }
+            {checkoutState === 1 && "Customer Details"}
             {checkoutState === 2 && "Delivery Address"}
           </span>
           <div className="max-w-md">
@@ -263,19 +407,25 @@ const CheckoutPage = () => {
               <div className=""></div>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1" className="border-none">
-                    <AccordionTrigger className="flex justify-start space-x-3">
-                        <span className="text-base font-heading text-blue-700 font-normal ">
-                        Have a coupon? Click here to enter your code!
-                        </span>
-                    </AccordionTrigger>
-                    <AccordionContent>
+                  <AccordionTrigger className="flex justify-start space-x-3">
+                    <span className="text-base font-heading text-blue-700 font-normal ">
+                      Have a coupon? Click here to enter your code!
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent>
                     <div className="flex space-x-3 items-end">
-                        <input className="border p-[0.9rem] rounded w-full" onChange={(e) => setCouponUsed(e.target.value)}></input>
-                        <div className="bg-red-500 px-20 py-4 rounded text-white font-heading uppercase cursor-pointer"
-                        onClick={() => applyCoupon()}>Apply</div>
+                      <input
+                        className="border p-[0.9rem] rounded w-full"
+                        onChange={(e) => setCouponUsed(e.target.value)}
+                      ></input>
+                      <div
+                        className="bg-red-500 px-20 py-4 rounded text-white font-heading uppercase cursor-pointer"
+                        onClick={() => applyCoupon()}
+                      >
+                        Apply
+                      </div>
                     </div>
-                    
-                    </AccordionContent>
+                  </AccordionContent>
                 </AccordionItem>
               </Accordion>
             </>
@@ -286,7 +436,8 @@ const CheckoutPage = () => {
                 Select Payment Method
               </h3>
               <span className="pb-5 font-heading text-sm">
-              All transactions are secure and encrypted. Credit card information is never stored on our servers.
+                All transactions are secure and encrypted. Credit card information is never stored
+                on our servers.
               </span>
               <ul className="flex flex-col space-y-5 max-w-md font-heading">
                 {paymentMethods.map((item: any) => (
@@ -294,11 +445,11 @@ const CheckoutPage = () => {
                     <input
                       type="radio"
                       id={item.name}
-                      name="delivery"
+                      name="payment"
                       value={item.name}
                       className="hidden peer"
                       required
-                      onClick={() => handleDelivery(item.name)}
+                      onClick={() => handlePayment(item.name)}
                     />
                     <label
                       htmlFor={item.name}
@@ -306,9 +457,7 @@ const CheckoutPage = () => {
                     >
                       <div className="block">
                         <div className="w-full text-lg font-semibold">{item.label}</div>
-                        <div className="w-full">
-                          {item.description}
-                        </div>
+                        <div className="w-full">{item.description}</div>
                       </div>
                       <FeatherIcon icon="check-square" />
                     </label>
@@ -317,15 +466,21 @@ const CheckoutPage = () => {
               </ul>
 
               <span className="pb-5 font-heading text-sm pt-4">
-              Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.
+                Your personal data will be used to process your order, support your experience
+                throughout this website, and for other purposes described in our privacy policy.
               </span>
               <p className="">
-				<label className="">
-				<input type="checkbox" className="" name="terms" id="terms" />
-					<span className="font-heading text-sm pt-4 pl-1">I have read and agree to the website <Link href="/terms-conditions/" className="">terms and conditions</Link></span>
-				</label>
-				<input type="hidden" name="terms-field" value="1" />
-			</p>
+                <label className="">
+                  <input type="checkbox" className="" name="terms" id="terms" />
+                  <span className="font-heading text-sm pt-4 pl-1">
+                    I have read and agree to the website{" "}
+                    <Link href="/terms-conditions/" className="">
+                      terms and conditions
+                    </Link>
+                  </span>
+                </label>
+                <input type="hidden" name="terms-field" value="1" />
+              </p>
             </>
           )}
 
@@ -333,14 +488,16 @@ const CheckoutPage = () => {
             onClick={() => {
               checkoutState === 1 && handleStateChange(2);
               checkoutState === 2 && handleStateChange(3);
-              checkoutState === 3 && handlePayment();
+              checkoutState === 3 && processPayment();
             }}
-            className={`border p-4 mt-10 rounded shadow-sm items-center justify-center uppercase max-w-md ${checkoutState === 3 ? 'bg-green-500' : 'bg-pink-500'} text-white cursor-pointer flex font-heading font-medium ${checkoutState === 3 ? 'hover:bg-green-700' : 'hover:bg-pink-700'} transition-all ease-in duration-300`}
+            className={`border p-4 mt-10 rounded shadow-sm items-center justify-center uppercase max-w-md ${checkoutState === 3 ? "bg-green-500" : "bg-pink-500"
+              } text-white cursor-pointer flex font-heading font-medium ${checkoutState === 3 ? "hover:bg-green-700" : "hover:bg-pink-700"
+              } transition-all ease-in duration-300`}
           >
-            {checkoutState === 1 && "Proceed to Delivery" }
+            {checkoutState === 1 && "Proceed to Delivery"}
             {checkoutState === 2 && "Proceed to Payment"}
             {checkoutState === 3 && "Order Now"}
-            
+
             <FeatherIcon icon="arrow-right-circle" size="18" className="ml-2" strokeWidth={3} />
           </div>
         </div>

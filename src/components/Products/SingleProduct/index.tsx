@@ -73,9 +73,6 @@ const SingleProduct = ({ slug }: { slug: string }) => {
   }, []);
 
   const handleAddItem = () => {
-    console.log(qty)
-    console.log(cart)
-    console.log('calling')
     if (
       selectedVariation?.length ===
       product.attributes.filter((item: any) => item.variation ?? true).length
@@ -84,6 +81,7 @@ const SingleProduct = ({ slug }: { slug: string }) => {
         product_id: product.id,
         variation_id: null,
         quantity: qty,
+        price: product.price,
       });
       console.log(cart)
       toast.success("Added to Cart", {

@@ -20,8 +20,8 @@ export const ENDPOINTS = {
     SHOPS: "/shops",
     SHOP: "/shop",
     SEARCH: "/product/search?",
-    ORDERS: "/orders",
-    ORDER: "/order",
+    ORDERS: "orders",
+    ORDER: "order",
 };
   
 export const VENDOR ={

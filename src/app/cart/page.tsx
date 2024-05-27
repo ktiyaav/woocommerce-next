@@ -32,7 +32,6 @@ export default function CartPage() {
     };
     fetchProducts();
   }, [cart.length]);
-  console.log(cart);
 
   if (data.length < 1) {
     return null;

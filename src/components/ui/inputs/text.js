@@ -4,7 +4,7 @@ const TextInput = ({name, label, placeholder, onchange, icon, value, disabled}) 
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
-        onchange({[name]:value});
+        onchange(value);
     } 
     return (
         <> 

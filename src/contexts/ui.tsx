@@ -46,7 +46,6 @@ const uiReducer = (state : State, action: ActionType) => {
             }
         case "ADD_TO_CART":
             if (action.value.product_id !== null) {
-                console.log('called')
                 const existingItemIndex = state.cart?.findIndex((item: any) => item.product_id === action.value.product_id);
                 if (existingItemIndex !== -1) {
                     const updatedCart = [...state.cart];
