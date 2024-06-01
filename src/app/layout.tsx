@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "@public/assets/globals.css";
-import Navbar from "@components/Navbar";
-import Footer from "@components/Footer";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { UIProvider } from "@/contexts/ui";
 import { Quicksand, Jost } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
