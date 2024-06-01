@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "@public/assets/globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { Navbar, Footer } from "@/components/Common/";
 import { UIProvider } from "@/contexts/ui";
 import { Quicksand, Jost } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
@@ -40,10 +39,10 @@ export default function RootLayout({
           </div>
           <Footer />
         </UIProvider>
-        <Toaster 
-          position="top-center" 
-          richColors 
-          // closeButton 
+        <Toaster
+          position="top-center"
+          richColors
+        // closeButton 
         />
       </body>
     </html>
