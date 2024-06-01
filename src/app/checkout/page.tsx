@@ -29,7 +29,11 @@ import { createOrderId } from "@/utils/payment";
 import { redirect } from 'next/navigation'
 import ThankyouPage from "@/components/Checkout/Thankyou";
 import {HashLoader} from 'react-spinners';
-
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 const CheckoutPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [redirectToThankYou, setRedirectToThankYou] = useState<boolean>(false);

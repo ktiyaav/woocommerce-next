@@ -2,7 +2,7 @@
 "use client"
 import SingleProduct from '@/components/Products/SingleProduct';
 import { usePathname, useRouter, useParams, useSearchParams } from 'next/navigation';
-const Product = ({product}:{product:any}) => {
+const Product = () => {
   let slug = usePathname();
   slug = slug.substring(5);
   return (
